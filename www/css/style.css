@@ -1,4 +1,18 @@
 /* Empty. Add your own CSS if you like */
-.content{
+/*.content{
     font-family:"Gujrati Saral-1"
+}*/
+@font-face {
+    font-family: 'Aakar';
+    src: url('Aakar-Medium.eot');
+    src: local('Aakar'),
+         url('Aakar-Medium.eot?#iefix') format('embedded-opentype'),
+         url('Aakar-Medium.woff') format('woff'),
+         url('aakar-medium.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.content{
+  font-family:'Aakar';
 }

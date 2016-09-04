@@ -41,7 +41,7 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('PlaylistsCtrl', function($scope,$http,$ionicLoading) {
+.controller('PlaylistsCtrl', function($scope,$http,$ionicLoading,$ionicPopup) {
    $scope.show = function() {
     $ionicLoading.show({
       template: 'Please wait...'
@@ -54,6 +54,19 @@ angular.module('starter.controllers', [])
       //  console.log("The loading indicator is now hidden");
     });
   };
+  
+  $scope.showAlert = function() {
+   var alertPopup = $ionicPopup.alert({
+     title: 'Error! ',
+     template: 'Make sure you have working internet connection'
+   });
+
+   alertPopup.then(function(res) {
+     return true;
+    //  console.log('Thank you for not eating my deli.cious ice cream cone');
+   });
+ };
+  
   $scope.show();
   $http.get('http://netyatra.in/api/get_recent_posts/').then(function(d){
     console.log('d',d);
@@ -68,6 +81,8 @@ angular.module('starter.controllers', [])
     // console.log('date', date);
     // console.log('getting post',d.data.posts);
   },function(e){
+    $scope.hide();
+    $scope.showAlert();
     console.log('e',e);
   })
   $scope.playlists = [
