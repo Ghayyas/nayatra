@@ -21,9 +21,10 @@ var app = angular.module('netyatra.controllers', [])
  */
 
 
-.controller('homeCtrl', function(showLoading,httpRequest,alertService,stopLoading) {
+.controller('homeCtrl', function(showLoading,httpRequest,alertService,stopLoading,$state) {
   
    var _self = this;
+   
      showLoading.show();
      httpRequest.httpFunc().then(function(r){
        console.log('data is resolved',r);
@@ -35,8 +36,29 @@ var app = angular.module('netyatra.controllers', [])
        console.log('data is rejected',e);
      })
      
+     _self.gotopostDetail = function(data){
+       var jsonString = JSON.stringify(data);
+      
+       $state.go('menu.postDetail',{postID:jsonString});
+        console.log('getting data',data);
+     }
     
 })
+
+
+
+/**
+ * 
+ * Post Detail Controller
+ * 
+ */
+   
+   .controller('postDetailCtrl',function($stateParams){
+     var _self = this;
+     var params = $stateParams.postID;
+     console.log('postID',params);
+   })
+
 
 
 /**
