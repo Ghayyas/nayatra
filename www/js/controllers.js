@@ -24,18 +24,44 @@ var app = angular.module('netyatra.controllers', [])
 .controller('homeCtrl', function(showLoading,httpRequest,alertService,stopLoading,$state) {
   
    var _self = this;
-   
-     showLoading.show();
+   // handle event
+   showLoading.show();
      httpRequest.httpFunc().then(function(r){
        console.log('data is resolved',r);
        _self.data = r.data.posts;
+       console.log('Data',_self.data);
        stopLoading.hide();
      },function(e){
        stopLoading.hide();
        alertService.showAlert('Error!', "Make sure you are connected to internet")
        console.log('data is rejected',e);
      })
+   
      
+     
+     _self.selectCall = function(d) {
+      //  console.log('selected',d);
+     
+       if(d.id == d.id){
+      _self.img = d.attachments[0].url;
+     _self.title = d.title;
+     _self.sendData = d;
+           console.log('seleted calls',_self.img,_self.title);
+         _self.selectedcall = 'calling to seleted ' + d;
+       }
+    
+     
+     }
+     _self.deselect = function(d){
+    //    if(d.id == d.id){
+    //   _self.img = d.attachments[0].url;
+    //  _self.title = d.title;
+    //  _self.sendData = d;
+    //    console.log('deselect calls',_self.img,_self.title);
+    //  }
+       
+
+     }
      _self.gotopostDetail = function(data){
        var jsonString = JSON.stringify(data);
       

@@ -41,6 +41,7 @@
 }
 .tabs-top > .tabs, .tabs.tabs-top{
   top: 0;
+  /*width: 400%;*/
 }
 .blackBlackGround{
   background-color: black;
@@ -63,3 +64,7 @@
     right: 21px;
     
 }
+/*a {
+    padding-left: 23px;
+    padding-right: 121px;
+}*/
