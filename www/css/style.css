@@ -12,7 +12,54 @@
     font-weight: normal;
     font-style: normal;
 }
+.scroll{
+  overflow-y: auto;
+  overflow-x: auto;
+}
 
-.content{
+.title{
   font-family:'Aakar';
+  color: white !important;
+  font-size: 20px !important;
+}
+
+.removeBottomPadding{
+  margin-bottom: 0;
+  padding: 0;
+}
+.noBorder{
+  border:none ;
+  color: black;
+  background-color: inherit;
+}
+.icon-colors{
+  color: rgba(0, 0, 0, 0.51);
+  font-size: 26px !important;
+}
+.sidemenu-name{
+  font-family: inherit;
+}
+.tabs-top > .tabs, .tabs.tabs-top{
+  top: 0;
+}
+.blackBlackGround{
+  background-color: black;
+}
+.hasmyHead{
+  position: absolute;
+  top:43px;
+  background-color:#b2b2b2;
+}
+.item-black{
+  background-color: rgba(17, 17, 17, 0.8);
+}
+.card-image{
+    height: 50%;
+    width: 49%;
+}
+.readFullArticle{
+    position: absolute;
+    bottom: 24px;
+    right: 21px;
+    
 }

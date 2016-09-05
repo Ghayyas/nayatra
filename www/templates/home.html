@@ -1,0 +1,108 @@
+<ion-view view-title="Net Yatra" cache-view="false" >
+  <ion-content style="background-color:#b2b2b2;">
+    <!--<ion-list>
+      <ion-item ng-repeat="playlist in playlists" href="#/app/playlists/{{playlist.id}}">
+        {{playlist.title}}
+      </ion-item>
+    </ion-list>-->
+    <!--<h1>Home Page</h1>-->
+<!--<div class="tabs-striped tabs-top tabs-background-positive tabs-color-light">
+    <div class="tabs">
+      <a class="tab-item active" href="#">
+        <i class="icon ion-home"></i>
+        Test
+      </a>
+      <a class="tab-item" href="#">
+        <i class="icon ion-star"></i>
+        Favorites
+      </a>
+      <a class="tab-item" href="#">
+        <i class="icon ion-gear-a"></i>
+        Settings
+      </a>
+    </div>
+  </div>  -->
+  <ion-tabs  class="tabs-striped tabs-top tabs-background-positive tabs-color-light">
+
+      <ion-tab title="ALL">
+        <!--<ion-nav-view name="about"></ion-nav-view>-->
+        <ion-view>
+        <ion-content class="hasmyHead">
+         <div class="list card" ng-repeat="data in home.data">
+
+  <!--<div class="item item-avatar item-black">
+    <img class="full-image" src="{{data.attachments[0].url}}">
+    <h2>{{data.author.name}}</h2>
+    <p>{{data.modified}}</p>
+  </div>-->
+
+  <div class="item item-body item-black row padding">
+ <div class="card" >
+    <img src="{{data.attachments[0].url}}" style="width: 200px;height: 100px;">  
+    </div>   
+    
+    <p class="title padding">
+      {{data.title}}
+    </p>
+    <div class="readFullArticle">
+    <p style="color:white;">Read Full Article</p>
+    </div>
+    <!--<p>
+      <a href="#" class="subdued">1 Like</a>
+      <a href="#" class="subdued">5 Comments</a>
+    </p>-->
+  </div>
+
+</div>
+</ion-content>
+</ion-view>
+      </ion-tab>
+
+      <!--<ion-tab title="Overview" icon-on="icon ion-clipboard" icon-off="icon ion-clipboard" href="#/menu/profile/tabs">
+       
+      </ion-tab>
+
+      <ion-tab title="Reviews" icon-on="icon ion-chatbubbles" icon-off="icon ion-chatbubbles" href="#/menu/profile/tabs">
+       
+      </ion-tab>-->
+
+    </ion-tabs>
+    <!--<div class="list card" ng-repeat="data in home.data">
+
+  <div class="item item-avatar">
+    <img src="{{data.attachments[0].url}}">
+    <h2>{{data.author.name}}</h2>
+    <p>{{data.modified}}</p>
+  </div>
+
+  <div class="item item-body">
+    <img class="full-image" src="{{data.attachments[0].url}}">
+    <p class="content">
+      {{data.content | contentParse}}
+    </p>-->
+    <!--<p>
+      <a href="#" class="subdued">1 Like</a>
+      <a href="#" class="subdued">5 Comments</a>
+    </p>-->
+  <!--</div>
+
+</div>-->
+
+  <!--<div class="tabs-striped tabs-color-assertive">
+    <div class="tabs">
+      <a class="tab-item active" href="#">
+        <i class="icon ion-home"></i>
+        Test
+      </a>
+      <a class="tab-item" href="#">
+        <i class="icon ion-star"></i>
+        Favorites
+      </a>
+      <a class="tab-item" href="#">
+        <i class="icon ion-gear-a"></i>
+        Settings
+      </a>
+    </div>
+  </div>-->
+  </ion-content>
+</ion-view>

@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers'])
+angular.module('netyatra', ['ionic', 'netyatra.controllers','netyatraFilter','netyatra.Service'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -25,49 +25,120 @@ angular.module('starter', ['ionic', 'starter.controllers'])
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
 
-    .state('app', {
-    url: '/app',
+    .state('menu', {
+    url: '/menu',
     abstract: true,
     templateUrl: 'templates/menu.html',
     controller: 'AppCtrl'
   })
-
-  .state('app.search', {
-    url: '/search',
+  .state('menu.home',{
+   url:'/home',
+   views:{
+     'menuContent':{
+       templateUrl: 'templates/home.html',
+       controller: 'homeCtrl as home'
+     }
+   }
+  })
+  .state('menu.postDetail',{
+   url:'/postDetail/:postID',
+   views:{
+     'menuContent':{
+       templateUrl: 'templates/postDetail.html',
+       controller: 'postDetailCtrl as postDetail'
+     }
+   }
+  })
+  .state('menu.bookmark',{
+    url: '/bookmark',
     views: {
-      'menuContent': {
-        templateUrl: 'templates/search.html'
+      'menuContent':{
+        templateUrl: 'templates/bookmark.html',
+        controller: 'bookmarkCtrl as bookmark'
       }
     }
   })
-
-  .state('app.browse', {
-      url: '/browse',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/browse.html'
-        }
-      }
-    })
-    .state('app.playlists', {
-      url: '/playlists',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/playlists.html',
-          controller: 'PlaylistsCtrl'
-        }
-      }
-    })
-
-  .state('app.single', {
-    url: '/playlists/:playlistId',
+  .state('menu.like',{
+    url: '/like',
     views: {
-      'menuContent': {
-        templateUrl: 'templates/playlist.html',
-        controller: 'PlaylistCtrl'
+      'menuContent':{
+        templateUrl: 'templates/like.html',
+        controller: 'likeCtrl as like'
       }
     }
-  });
+  })
+  .state('menu.share',{
+    url: '/share',
+    views: {
+      'menuContent':{
+        templateUrl: 'templates/share.html',
+        controller: 'shareCtrl as share'
+      }
+    }
+  })
+  .state('menu.rate',{
+    url: '/rate',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/rate.html',
+        controller: 'rateCtrl as rate'
+      }
+    }
+  })
+  .state('menu.about',{
+    url: '/about',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/about.html',
+        controller: 'aboutCtrl as about'
+      }
+    }
+  })
+  .state('menu.othersApp',{
+    url: '/others',
+    views:{
+      'menuContent':{
+        templateUrl: 'templates/others.html',
+        controller: 'othersCtrl as others'
+      }
+    }
+  })
+  // .state('menu.search', {
+  //   url: '/search',
+  //   views: {
+  //     'menuContent': {
+  //       templateUrl: 'templates/search.html'
+  //     }
+  //   }
+  // })
+
+  // .state('menu.browse', {
+  //     url: '/browse',
+  //     views: {
+  //       'menuContent': {
+  //         templateUrl: 'templates/browse.html'
+  //       }
+  //     }
+  //   })
+  //   .state('menu.playlists', {
+  //     url: '/playlists',
+  //     views: {
+  //       'menuContent': {
+  //         templateUrl: 'templates/playlists.html',
+  //         controller: 'PlaylistsCtrl'
+  //       }
+  //     }
+  //   })
+
+  // .state('menu.single', {
+  //   url: '/playlists/:playlistId',
+  //   views: {
+  //     'menuContent': {
+  //       templateUrl: 'templates/playlist.html',
+  //       controller: 'PlaylistCtrl'
+  //     }
+  //   }
+  // });
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/playlists');
+  $urlRouterProvider.otherwise('/menu/home');
 });
