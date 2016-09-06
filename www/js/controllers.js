@@ -72,6 +72,60 @@ var app = angular.module('netyatra.controllers', [])
 })
 
 
+/**
+ * 
+ * categoryCtrl
+ * 
+ */
+
+    .controller('categoryCtrl',function($stateParams,showLoading,httpRequest,alertService,stopLoading,$state){
+      var _self = this;
+    
+      showLoading.show();
+     httpRequest.httpFunc().then(function(r){
+       console.log('data is resolved',r);
+       _self.data = r.data.posts;
+       console.log('Data',_self.data);
+       stopLoading.hide();
+     },function(e){
+       stopLoading.hide();
+       alertService.showAlert('Error!', "Make sure you are connected to internet")
+       console.log('data is rejected',e);
+     })
+     
+     _self.showCategoryDetail = function(d){
+       var jsonString = JSON.stringify(d);
+       var c =jsonString.replace(/[^/\%22]+$/,"")
+      
+       $state.go('menu.categoryDetail',{category:jsonString})
+      //  console.log('detail',c);
+     }
+  })
+    
+  /**
+   * 
+   * 
+   * 
+   */
+  
+  .controller('categoryDetailCtrl',function($stateParams,$state){
+    
+    var _self = this;
+    var params = $stateParams.category;
+    var jsonString = JSON.parse(params)
+    _self.data = jsonString;
+    console.log('detail ID',jsonString);
+    
+    _self.gotoCategoryDetail = function(d){
+      var jsonString = JSON.stringify(d)
+      $state.go('menu.postDetail',{postID:jsonString});
+      console.log('detial deta',d);
+    }  
+    
+    
+  })  
+    
+    
 
 /**
  * 
@@ -81,9 +135,13 @@ var app = angular.module('netyatra.controllers', [])
    
    .controller('postDetailCtrl',function($stateParams){
      var _self = this;
-     var params = $stateParams.postID;
-     console.log('postID',params);
-   })
+      var params = $stateParams.postID;
+      var jsonParse = JSON.parse(params)
+     console.log('postID',jsonParse);
+   
+})
+   
+   
 
 
 

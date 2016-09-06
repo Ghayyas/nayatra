@@ -40,6 +40,24 @@ angular.module('netyatra', ['ionic', 'netyatra.controllers','netyatraFilter','ne
      }
    }
   })
+  .state('menu.category',{
+   url:'/category',
+   views:{
+     'menuContent':{
+       templateUrl: 'templates/categories.html',
+       controller: 'categoryCtrl as category'
+     }
+   }
+  })
+  .state('menu.categoryDetail',{
+   url:'/detail/:category',
+   views:{
+     'menuContent':{
+       templateUrl: 'templates/categoryDetail.html',
+       controller: 'categoryDetailCtrl as categoryDetail'
+     }
+   }
+  })
   .state('menu.postDetail',{
    url:'/postDetail/:postID',
    views:{

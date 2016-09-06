@@ -1,0 +1,13 @@
+<ion-view view-title="Categories">
+    <ion-content style="background-color:#b2b2b2;padding-top: 26px;">
+      <!--<div class="list card" ng-repeat="category in category.data">
+          {{category.categories[0].title}}
+          </div> -->
+          <ul class="list" ng-repeat="cat in category.data">
+          <li class="item noBorder" ng-click="category.showCategoryDetail(cat)" ng-repeat="c in cat.categories">
+              
+          <p style="color:black">{{c.id}}</p> 
+         </li>
+         </ul>   
+        </ion-content>
+</ion-view>

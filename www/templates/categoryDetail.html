@@ -1,0 +1,21 @@
+<ion-view view-title="{{categoryDetail.data.title}}">
+    <ion-content style="background-color:#b2b2b2;">
+        
+   <div class="list card">
+
+  <div class="item item-body item-black row padding" ng-click="categoryDetail.gotoCategoryDetail(categoryDetail.data)">
+ <div class="card">
+    <img src="{{categoryDetail.data.attachments[0].url}}" style="width: 200px;height: 100px;">  
+    </div>   
+    
+    <p class="title padding">
+      {{categoryDetail.data.title}}
+    </p>
+    <div class="readFullArticle">
+    <p style="color:white;">Read Full Article</p>
+    </div>
+  </div>
+
+</div>
+</ion-content>
+    </ion-view>

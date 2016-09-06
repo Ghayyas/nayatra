@@ -14,7 +14,7 @@
 }
 .scroll{
   overflow-y: auto;
-  overflow-x: auto;
+  overflow-x: hidden;
 }
 
 .title{
@@ -64,7 +64,17 @@
     right: 21px;
     
 }
-/*a {
-    padding-left: 23px;
-    padding-right: 121px;
+
+a.item-content{
+  background-color: inherit !important;
+}
+
+ul > li{
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/*a.tab-item {
+padding-left: 2%;
+    padding-right: 12%;
 }*/
