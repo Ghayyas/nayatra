@@ -3,11 +3,15 @@
       <!--<div class="list card" ng-repeat="category in category.data">
           {{category.categories[0].title}}
           </div> -->
-          <ul class="list" ng-repeat="cat in category.data">
-          <li class="item noBorder" ng-click="category.showCategoryDetail(cat)" ng-repeat="c in cat.categories">
-              
-          <p style="color:black">{{c.id}}</p> 
+      <p>{{category.myArray | json}}</p>
+          <ul class="list" ng-repeat="cat in category.data track by $index">
+          <li class="item noBorder" ng-if="category.checkStatus($parent.$index,c.id,$index)" ng-click="category.showCategoryDetail(cat)"
+              ng-repeat="c in cat.categories track by $index">
+
+          <p style="color:black">{{c.id}}  {{c.status}}</p>
+
          </li>
-         </ul>   
+         </ul>
+
         </ion-content>
 </ion-view>
