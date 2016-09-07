@@ -282,17 +282,26 @@ var app = angular.module('netyatra.controllers', [])
      
      _self.bookmark = function(d){
        var convertJson = JSON.stringify(d);
-       var arr = [];
+      //  var arr = [];
        var getItem = window.localStorage.getItem('item');
        if(getItem){
+        //  window.localStorage.clear();
          var parse = JSON.parse(getItem);
-         arr.push(parse); 
-         arr.push(d);
-         console.log('arr',arr);
+        //  var convertString = parse.join();
+          // console.log('getting object',convertString);
+
+         parse.push(d);
+        //  console.log('d',parse);
+      //    item.push(d);
+       var con = JSON.stringify(parse);
+      //  console.log('json',parse);
+       window.localStorage.setItem('item',con);
+         console.log('arr',parse);
        }
        else{
-       var con = JSON.stringify(d);
-       console.log('json',con);
+       item.push(d);
+       var con = JSON.stringify(item);
+       console.log('json',item);
        window.localStorage.setItem('item',con);
        }
 
