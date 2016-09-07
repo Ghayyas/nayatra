@@ -9,12 +9,11 @@
       <!--<div class="list card" ng-repeat="category in category.data">
           {{category.categories[0].title}}
           </div> -->
-      <p>{{category.myArray | json}}</p>
           <ul class="list" ng-repeat="cat in category.data track by $index">
-          <li class="item noBorder" ng-if="category.checkStatus($parent.$index,c.id,$index)" ng-click="category.showCategoryDetail(cat)"
+          <li class="item noBorder" ng-show="c.status" ng-click="category.showCategoryDetail(cat)"
               ng-repeat="c in cat.categories track by $index">
 
-          <p style="color:black">{{c.id}}  {{c.status}}</p>
+          <p style="color:black">{{c.id}}</p>
 
          </li>
          </ul>
