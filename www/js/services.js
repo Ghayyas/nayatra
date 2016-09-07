@@ -40,7 +40,7 @@ netyatraService.service('stopLoading',function($ionicLoading){
    
    this.httpFunc = function() { 
      $http.get('http://netyatra.in/api/get_recent_posts/').then(function(resolved){
-    console.log('d',resolved);
+    // console.log('d',resolved);
     //  var postData = d.data.posts;
      deffered.resolve(resolved);
     //  $scope.hide();
@@ -56,7 +56,7 @@ netyatraService.service('stopLoading',function($ionicLoading){
     // $scope.hide();
     // $scope.showAlert();
     deffered.reject(rejected);
-    console.log('e',rejected);
+    // console.log('e',rejected);
   })
   
    return deffered.promise;
@@ -85,4 +85,59 @@ netyatraService.service('alertService',function($ionicPopup) {
  };
 //  return showAlert(title,template);
 });
+
+
+/**
+ * 
+ * Local storage Service
+ * 
+ */
  
+netyatraService.factory ('StorageService', function ($localStorage,$q) {
+ var deffered = $q.defer();
+ $localStorage = $localStorage.$default({
+    item: []
+  });
+  
+
+var _getAll = function () {
+  
+  return $localStorage.item;
+  //  if($localStorage.item){
+  //    deffered.resolve(true);
+  //  }
+  //  else{
+  //    deffered.reject(true);
+  //  }
+  //  return deffered.promise;
+};
+
+var _add = function (d) {
+ 
+  var success = $localStorage.item.push(d);
+  if(success){
+    deffered.resolve(true)
+    
+  }
+  else{
+    deffered.reject(true);
+  }
+  return deffered.promise;
+}
+var _remove = function (d) {
+ 
+  var success = $localStorage.item.splice($localStorage.item.indexOf(d), 1);
+  if(success){
+    deffered.resolve(true);
+  }
+  else{
+    deffered.reject(true)
+  }
+  return deffered.promise;
+}
+return {
+    getAll: _getAll,
+    add: _add,
+    remove: _remove
+  };
+})

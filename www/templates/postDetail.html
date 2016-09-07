@@ -1,5 +1,38 @@
-<ion-view view-title="Home">
-  <ion-content>
-    <h1>Home</h1>
+<ion-view view-title="Net yatra">
+  <ion-content style="background-color:#b2b2b2;">
+   <div class="card">
+
+  <div class="item item-black">
+    <!--<img src="mcfly.jpg">-->
+    <button style="background: blue;color: white;border: none;font-size: 21px;">
+      <i class="icon ion-android-share" style="font-size: 27px;"></i>&nbsp; &nbsp;Share on Facebook
+    </button>
+     <div style="position: absolute;top: 15px;right: 17px;color:white;" ng-show="!postDetail.bookmarked" ng-click="postDetail.bookmark(postDetail.fullDetail)">
+           <span class="icon ion-bookmark" style="font-size: 47px;"></span>
+</div>
+<div style="position: absolute;top: 15px;right: 17px;color:#ffc900" ng-show="postDetail.bookmarked" ng-click="postDetail.remove(postDetail.fullDetail)">
+           <span class="icon ion-bookmark" style="font-size: 47px;"></span>
+</div>
+    
+  </div>
+
+  <div class="item item-body item-black">
+    <img class="full-image" src="./img/sliderlogo.jpg">
+    <p class="detail-content padding">
+       {{postDetail.content | contentParse}}
+    </p>
+    <p>
+      <button style="background: blue;color: white;border: none;font-size: 21px;">
+      <i class="icon ion-thumbsup"></i>  &nbsp; Like
+      </button>
+      <!--<a href="#" class="subdued">1 Like</a>-->
+      <!--<a href="#" class="subdued">5 tweet</a>-->
+      <button style="background: blue;color: white;border: none;font-size: 21px; position: absolute;right: 17px;">
+        <i class="icon ion-social-twitter"></i> &nbsp;tweet
+      </button>
+    </p>
+  </div>
+
+</div>
   </ion-content>
 </ion-view>

@@ -73,7 +73,13 @@ ul > li{
   padding-top: 0 !important;
   padding-bottom: 0 !important;
 }
-
+.detail-content{
+    color: white !important;
+    font-size: 22px !important;
+}
+.tab-item.tab-item-active{
+  border: none !important;
+}
 /*a.tab-item {
 padding-left: 2%;
     padding-right: 12%;
