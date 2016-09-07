@@ -7,7 +7,10 @@
     <button style="background: blue;color: white;border: none;font-size: 21px;">
       <i class="icon ion-android-share" style="font-size: 27px;"></i>&nbsp; &nbsp;Share on Facebook
     </button>
-     <div style="position: absolute;top: 15px;right: 17px;color:#ffc900" ng-click="postDetail.bookmark(postDetail.fullDetail)">
+     <div style="position: absolute;top: 15px;right: 17px;color:white;" ng-show="!postDetail.bookmarked" ng-click="postDetail.bookmark(postDetail.fullDetail)">
+           <span class="icon ion-bookmark" style="font-size: 47px;"></span>
+</div>
+<div style="position: absolute;top: 15px;right: 17px;color:#ffc900" ng-show="postDetail.bookmarked" ng-click="postDetail.remove(postDetail.fullDetail)">
            <span class="icon ion-bookmark" style="font-size: 47px;"></span>
 </div>
     

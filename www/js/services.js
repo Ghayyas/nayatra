@@ -85,4 +85,59 @@ netyatraService.service('alertService',function($ionicPopup) {
  };
 //  return showAlert(title,template);
 });
+
+
+/**
+ * 
+ * Local storage Service
+ * 
+ */
  
+netyatraService.factory ('StorageService', function ($localStorage,$q) {
+ var deffered = $q.defer();
+ $localStorage = $localStorage.$default({
+    item: []
+  });
+  
+
+var _getAll = function () {
+  
+  return $localStorage.item;
+  //  if($localStorage.item){
+  //    deffered.resolve(true);
+  //  }
+  //  else{
+  //    deffered.reject(true);
+  //  }
+  //  return deffered.promise;
+};
+
+var _add = function (d) {
+ 
+  var success = $localStorage.item.push(d);
+  if(success){
+    deffered.resolve(true)
+    
+  }
+  else{
+    deffered.reject(true);
+  }
+  return deffered.promise;
+}
+var _remove = function (d) {
+ 
+  var success = $localStorage.item.splice($localStorage.item.indexOf(d), 1);
+  if(success){
+    deffered.resolve(true);
+  }
+  else{
+    deffered.reject(true)
+  }
+  return deffered.promise;
+}
+return {
+    getAll: _getAll,
+    add: _add,
+    remove: _remove
+  };
+})

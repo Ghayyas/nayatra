@@ -1,5 +1,30 @@
-<ion-view view-title="BookMark">
-  <ion-content>
-    <h1>BookMark</h1>
-  </ion-content>
+<ion-view view-title="BookMarked">
+  <ion-content style="background-color:#b2b2b2;">
+  <ion-tabs  class="tabs-striped tabs-top tabs-background-positive tabs-color-light">
+
+      <ion-tab>
+        <ion-view>
+        <ion-content class="hasmyHead">
+
+         <div class="list card" ng-repeat="data in bookmark.data">
+
+  <div class="item item-body item-black row padding" ng-click="bookmark.gotopostDetail(data)">
+ <div class="card">
+    <img src="{{data.attachments[0].url}}" style="width: 200px;height: 100px;">  
+    </div>   
+    
+    <p class="title padding">
+      {{data.title}}
+    </p>
+    <div class="readFullArticle">
+    <p style="color:white;">Read Full Article</p>
+    </div>
+  </div>
+
+</div>
+</ion-content>
+</ion-view>
+      </ion-tab>
+      
+    </ion-tabs>  </ion-content>
 </ion-view>

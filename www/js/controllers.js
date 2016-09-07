@@ -163,7 +163,7 @@ var app = angular.module('netyatra.controllers', [])
       var jsonString = JSON.stringify(data);
 
       $state.go('menu.postDetail', {postID: jsonString});
-      console.log('getting data', data);
+      // console.log('getting data', data);
     }
 
   })
@@ -236,7 +236,9 @@ var app = angular.module('netyatra.controllers', [])
        }*/
     //};
     
-  })
+})
+
+
 
 
   /**
@@ -270,61 +272,104 @@ var app = angular.module('netyatra.controllers', [])
  * 
  */
    
-   .controller('postDetailCtrl',function($stateParams,$rootScope){
+   .controller('postDetailCtrl',function($scope,$stateParams,$rootScope,StorageService,alertService){
      var _self = this;
       var params = $stateParams.postID;
       var jsonParse = JSON.parse(params);
-      var item = [];
+      
+      // Enter Page is loaded this events will works
+      
+        $scope.$on("$ionicView.beforeEnter", function(event, data){
+          // handle event
+      //  console.log("State Params: ", data.stateParams);
+         var getSpecific = StorageService.getAll();
+          for(var i = 0; i < getSpecific.length; i++){
+              var jsonID = jsonParse.id;
+              var speci = getSpecific[i].id;
+                if(jsonID == speci){
+                _self.bookmarked = true;
+
+                  //  console.log('sucess mil gya',jsonParse.id); 
+          }
+           else{
+                  //  console.log('nhn mila');
+                   _self.bookmarked = false;
+                }
+        }
+        });
+     
+     
+     
       _self.content = jsonParse.content;
       _self.fullDetail = jsonParse;
      
-     
-     
      _self.bookmark = function(d){
-       var convertJson = JSON.stringify(d);
-      //  var arr = [];
-       var getItem = window.localStorage.getItem('item');
-       if(getItem){
-        //  window.localStorage.clear();
-         var parse = JSON.parse(getItem);
-        //  var convertString = parse.join();
-          // console.log('getting object',convertString);
-
-         parse.push(d);
-        //  console.log('d',parse);
-      //    item.push(d);
-       var con = JSON.stringify(parse);
-      //  console.log('json',parse);
-       window.localStorage.setItem('item',con);
-         console.log('arr',parse);
-       }
-       else{
-       item.push(d);
-       var con = JSON.stringify(item);
-       console.log('json',item);
-       window.localStorage.setItem('item',con);
-       }
+       
+       StorageService.add(d).then(function(s){
+         
+        _self.bookmarked = true;
+         alertService.showAlert('Success !','successfully Bookmarked');
+       },function(e){
+         alertService.showAlert('Error !','Error getting Bookmarked')
+       });
+       
+       var getting = StorageService.getAll();
+      
+       
+       
+       console.log('storage Service',getting);
+       
+      //  var getItem = window.localStorage.getItem('item');
+      //  if(getItem){
+      //    var parse = JSON.parse(getItem);
+      //    parse.push(d);
+      //  var con = JSON.stringify(parse);
+      //  window.localStorage.setItem('item',con);
+      //    console.log('arr',parse);
+      //  }
+      //  else{
+      //  item.push(d);
+      //  var con = JSON.stringify(item);
+      //  console.log('json',item);
+      //  window.localStorage.setItem('item',con);
+      //  }
 
      }
+     
+     _self.remove = function(d){
+       _self.bookmarked = false;
+        StorageService.remove(d).then(function(s) {
+          alertService.showAlert('Success !','SuccessFully Remove Bookmarked')
+        },function(e) {
+          alertService.showAlert('Error !','Error in removing');
+        });  
+        console.log('storage Remove',StorageService.getAll());
+     }
  })
-   
-   
-
-
-
+ 
+ 
 /**
  * 
  * bookmarkCtrl
  * 
  */
 
+ .controller('bookmarkCtrl', function($stateParams,StorageService,$state) {
+       
+       var _self = this;
+       
+        var getSpecific = StorageService.getAll();
 
-.controller('bookmarkCtrl', function($scope, $stateParams,$rootScope) {
-            console.log('from bookmark arra',$rootScope.item);
-
-       var c  = window.localStorage.getItem('item');
-       var d = JSON.parse(c)
-       console.log('bookmark',d);
+       _self.data = getSpecific;
+       
+       _self.gotopostDetail = function(data){
+         
+         var jsonString = JSON.stringify(data);
+         $state.go('menu.postDetail', {postID: jsonString});
+         console.log('getting data', data);
+       }
+       
+       console.log('bookmark',getSpecific);
   
 })
 
@@ -347,6 +392,7 @@ var app = angular.module('netyatra.controllers', [])
    */
 
 
+  
   .controller('shareCtrl', function ($scope, $stateParams) {
   })
 
@@ -368,10 +414,6 @@ var app = angular.module('netyatra.controllers', [])
 
   .controller('aboutCtrl', function ($scope, $stateParams) {
   })
-
-
-
-
 
   /**
    *
