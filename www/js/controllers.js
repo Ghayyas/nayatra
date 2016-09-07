@@ -77,7 +77,7 @@ var app = angular.module('netyatra.controllers', [])
    *
    */
 
-  .controller('categoryCtrl', function ($timeout, $scope, $stateParams, showLoading, httpRequest, alertService, stopLoading, $state) {
+  .controller('categoryCtrl', function ($stateParams, showLoading, httpRequest, alertService, stopLoading, $state) {
     var _self = this;
 
     showLoading.show();
@@ -106,39 +106,37 @@ var app = angular.module('netyatra.controllers', [])
       console.log(index1);
       console.log(index2);
 
-      if (index1 == 0) {
-        var arr2 = _self.data[index1].categories;
-        for (var i = 0; i < arr2.length; i++) {
-          var digit = arr2[i].id;
-          if (_self.myArray.indexOf(digit) != -1) {
-            _self.data[index1].categories[index2].status = false;
-            return true;
-          } else {
-            _self.myArray.push(digit);
+        //var arr = _self.data[index1].categories;
+          if (_self.myArray.indexOf(value) == -1) {
+            _self.myArray.push(value);
+            console.log("first");
             _self.data[index1].categories[index2].status = true;
             return true;
+          } else {
+            console.log("second");
+            _self.data[index1].categories[index2].status = false;
+            return true;
           }
-        }
       }
-      var arr = _self.data[index1 - 1].categories;
+      // arr = _self.data[index1].categories;
 
-      for (var i = 0; i < arr.length; i++) {
-        if (arr[i].id == value || _self.myArray.indexOf(value) != -1) {
-          _self.data[index1-1].categories[index2].status = false;
-          return true;
-          break;
-        }
-      }
-      _self.data[index1-1].categories[index2].status = true;
-        _self.myArray.push(value);
-      return true;
+      //for (var i = 0; i < arr.length; i++) {
+        //if (_self.myArray.indexOf(value) != -1) {
+//_self.data[index1-1].categories[index2].status = false;
+  //        return true;
+    //      break;
+      //  }
+      //}
+      //_self.data[index1-1].categories[index2].status = true;
+        //_self.myArray.push(value);
+      //return true;
 
       /*  if(arr.indexOf(value)==-1){
        return true;
        }else{
        return false;
        }*/
-    };
+    //};
   })
 
   /**
