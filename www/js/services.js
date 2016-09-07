@@ -40,7 +40,7 @@ netyatraService.service('stopLoading',function($ionicLoading){
    
    this.httpFunc = function() { 
      $http.get('http://netyatra.in/api/get_recent_posts/').then(function(resolved){
-    console.log('d',resolved);
+    // console.log('d',resolved);
     //  var postData = d.data.posts;
      deffered.resolve(resolved);
     //  $scope.hide();
@@ -56,7 +56,7 @@ netyatraService.service('stopLoading',function($ionicLoading){
     // $scope.hide();
     // $scope.showAlert();
     deffered.reject(rejected);
-    console.log('e',rejected);
+    // console.log('e',rejected);
   })
   
    return deffered.promise;

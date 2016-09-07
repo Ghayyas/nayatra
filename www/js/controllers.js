@@ -20,21 +20,21 @@ var app = angular.module('netyatra.controllers', [])
  * 
  */
 
-
-.controller('homeCtrl', function(showLoading,httpRequest,alertService,stopLoading,$state) {
+  .controller('homeCtrl', function(showLoading,httpRequest,alertService,stopLoading,$state) {
   
    var _self = this;
+
    // handle event
    showLoading.show();
      httpRequest.httpFunc().then(function(r){
        console.log('data is resolved',r);
        _self.data = r.data.posts;
-       console.log('Data',_self.data);
+      //  console.log('Data',_self.data);
        stopLoading.hide();
      },function(e){
        stopLoading.hide();
        alertService.showAlert('Error!', "Make sure you are connected to internet")
-       console.log('data is rejected',e);
+      //  console.log('data is rejected',e);
      })
    
      
@@ -66,7 +66,7 @@ var app = angular.module('netyatra.controllers', [])
        var jsonString = JSON.stringify(data);
       
        $state.go('menu.postDetail',{postID:jsonString});
-        console.log('getting data',data);
+        // console.log('getting data',data);
      }
     
 })
@@ -95,7 +95,7 @@ var app = angular.module('netyatra.controllers', [])
      
      _self.showCategoryDetail = function(d){
        var jsonString = JSON.stringify(d);
-       var c =jsonString.replace(/[^/\%22]+$/,"")
+      //  var c =jsonString.replace(/[^/\%22]+$/,"")
       
        $state.go('menu.categoryDetail',{category:jsonString})
       //  console.log('detail',c);
@@ -133,13 +133,129 @@ var app = angular.module('netyatra.controllers', [])
  * 
  */
    
-   .controller('postDetailCtrl',function($stateParams){
+   .controller('postDetailCtrl',function($stateParams,$rootScope){
      var _self = this;
       var params = $stateParams.postID;
-      var jsonParse = JSON.parse(params)
-     console.log('postID',jsonParse);
-   
-})
+      var jsonParse = JSON.parse(params);
+      var item = [];
+      _self.content = jsonParse.content;
+      _self.fullDetail = jsonParse;
+      // console.log('fullDetail',_self.fullDetail)
+    //  console.log('postID',_self.content);
+    //  console.log('item arra',item);
+     
+     
+     
+     _self.bookmark = function(d){
+       var convertJson = JSON.stringify(d);
+       var arr = [];
+       var getItem = window.localStorage.getItem('item');
+      //  console.log('getitem',getItem)
+       if(getItem){
+         var parse = JSON.parse(getItem);
+        // window.localStorage.removeItem('item');
+         arr.push(parse); 
+         arr.push(d);
+        //  var der = [parse,d]
+         console.log('arr',arr);
+        //  var con = JSON.stringify(arr);
+         
+        //   window.localStorage.setItem('item',con);
+          
+          //  window.localStorage.removeItem('item');
+
+        //   var again = window.localStorage.getItem('item');
+        //   var myparse = JSON.parse(again);
+        //   arr.push(myparse);
+        //   console.log('getting again in console',arr);
+        //  window.localStorage.clear();
+        //  console.log('get item',typeof(parse))
+        //  var arrpush = arr.push(parse);
+        //  console.log('push',arr);
+        //  arr.push(convertJson);
+        //  var con = JSON.stringify(arr);
+        //  window.localStorage.setItem('item',con);
+        //  console.log('arrpush',arr);
+       }
+      //  var arr = [{id: 2,'s':'s','sd':'er'},{id:3,'d':'ere','ff':'ssd'},{'id':1,'sdf':'sf'}]
+       else{
+      //  var arrpush = arr.push(convertJson);
+      //   console.log('arr',arr);
+       var con = JSON.stringify(d);
+      //  var n = JSON.parse(con)
+       console.log('json',con);
+       window.localStorage.setItem('item',con);
+      //  var d = window.localStorage.getItem('item');
+      //  var r = JSON.parse(d);
+      //  console.log('d',typeof(r));   
+       }
+      
+      //  if(getItem){
+      //   //  window.localStorage.removeItem('bookmark');
+      //     // console.log('jaons',getItem,'typeOF',typeof(getItem));
+      //     // var sring = JSON.stringify(getItem);
+      //     // console.log('tyeof sring',sring);
+      //      var parser = JSON.parse(getItem || '[]');
+         
+      //    console.log('sysys',typeof(parser));
+         
+      //   //  if(typeof(parser)== 'object'){
+      //    parser.push(convertJson);
+      //    window.localStorage.setItem('bookmark',parser);           
+      //   //  }
+      //   //  else{
+      //   //  var sp = parser.split(',');
+      //   //  console.log('sp',sp);
+      //   //  sp.push(convertJson);
+      //   //  window.localStorage.setItem('bookmark',sp);   
+      //   //  }
+
+ 
+      //  }else{
+      //     var arr = '[' + convertJson + ']';
+      //     var c = JSON.stringify(arr);
+      //     console.log('arr',c)
+      //   window.localStorage.setItem('bookmark',c);
+      //  }
+        // console.log('getitem',getItem);
+        
+       
+        
+      // console.log('send',d);
+      //  if(getItem){
+      //    var p = JSON.stringify(getItem);
+      //    var n = JSON.parse(p);
+      //    item.push(n);
+      //    console.log('push success',item);
+      //   //  window.localStorage.removeItem('bookmark');
+      //    var data = JSON.stringify(d);
+      //     window.localStorage.setItem('bookmark',data); 
+      //     var d = localStorage.getItem('bookmark');
+      //     var ddd = JSON.parse(d);
+      //     item.push(ddd);
+      //     // var ss = JSON.parse(d);
+      //     console.log('gttin',item);
+      // }
+      // else{
+      //   // item.push(parser);
+      //   var myItem = JSON.stringify(d)
+      //   console.log('else item',myItem);
+      //   window.localStorage.setItem('bookmark',myItem);
+        
+      // }
+      //  var parser = JSON.parse(item);
+
+      //  console.log('d',item);
+      //  var getItem = window.localStorage.getItem('bookmark.item');
+      //  if(getItem){
+      //    item.push(convertJson);
+      //  }
+      //  var cd = [convertJson];
+      //  console.log('cd',cd);
+      //  window.localStorage.setItem('bookmark.item',cd);
+
+     }
+ })
    
    
 
@@ -152,7 +268,13 @@ var app = angular.module('netyatra.controllers', [])
  */
 
 
-.controller('bookmarkCtrl', function($scope, $stateParams) {
+.controller('bookmarkCtrl', function($scope, $stateParams,$rootScope) {
+            console.log('from bookmark arra',$rootScope.item);
+
+       var c  = window.localStorage.getItem('item');
+       var d = JSON.parse(c)
+       console.log('bookmark',d);
+  
 })
 
 
