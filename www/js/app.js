@@ -50,7 +50,7 @@ angular.module('netyatra', ['ionic', 'netyatra.controllers','netyatraFilter','ne
    }
   })
   .state('menu.categoryDetail',{
-   url:'/detail/:category',
+   url:'/detail/:category/:value/:title',
    views:{
      'menuContent':{
        templateUrl: 'templates/categoryDetail.html',
@@ -121,42 +121,6 @@ angular.module('netyatra', ['ionic', 'netyatra.controllers','netyatraFilter','ne
       }
     }
   })
-  // .state('menu.search', {
-  //   url: '/search',
-  //   views: {
-  //     'menuContent': {
-  //       templateUrl: 'templates/search.html'
-  //     }
-  //   }
-  // })
-
-  // .state('menu.browse', {
-  //     url: '/browse',
-  //     views: {
-  //       'menuContent': {
-  //         templateUrl: 'templates/browse.html'
-  //       }
-  //     }
-  //   })
-  //   .state('menu.playlists', {
-  //     url: '/playlists',
-  //     views: {
-  //       'menuContent': {
-  //         templateUrl: 'templates/playlists.html',
-  //         controller: 'PlaylistsCtrl'
-  //       }
-  //     }
-  //   })
-
-  // .state('menu.single', {
-  //   url: '/playlists/:playlistId',
-  //   views: {
-  //     'menuContent': {
-  //       templateUrl: 'templates/playlist.html',
-  //       controller: 'PlaylistCtrl'
-  //     }
-  //   }
-  // });
-  // if none of the above states are matched, use this as the fallback
+ 
   $urlRouterProvider.otherwise('/menu/home');
 });

@@ -3,12 +3,12 @@
     font-family:"Gujrati Saral-1"
 }*/
 @font-face {
-    font-family: 'Aakar';
-    src: url('Aakar-Medium.eot');
-    src: local('Aakar'),
-         url('Aakar-Medium.eot?#iefix') format('embedded-opentype'),
-         url('Aakar-Medium.woff') format('woff'),
-         url('aakar-medium.ttf') format('truetype');
+    font-family: 'Rekha';
+    src: url('Rekha.eot');
+    src: local('Rekha'),
+         url('Rekha?#iefix') format('embedded-opentype'),
+         url('Rekha.woff') format('woff'),
+         url('Rekha.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
@@ -16,11 +16,18 @@
   overflow-y: auto;
   overflow-x: hidden;
 }
+ion-content{
+  overflow-x: hidden;
+  overflow-y: auto;
+}
 
 .title{
-  font-family:'Aakar';
+  font-family:'Rekha';
   color: white !important;
   font-size: 20px !important;
+}
+.gujarti{
+  font-family: 'Rekha';
 }
 
 .removeBottomPadding{
@@ -59,9 +66,10 @@
     width: 49%;
 }
 .readFullArticle{
-    position: absolute;
+   position: absolute;
     bottom: 24px;
-    right: 21px;
+    left: 65%;
+    width: 33%;
     
 }
 

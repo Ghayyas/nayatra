@@ -9,14 +9,14 @@
       <!--<div class="list card" ng-repeat="category in category.data">
           {{category.categories[0].title}}
           </div> -->
-          <ul class="list" ng-repeat="cat in category.data track by $index">
-          <li class="item noBorder" ng-show="c.status" ng-click="category.showCategoryDetail(cat)"
+          <div ng-repeat="cat in category.data track by $index">
+          <div class="item noBorder" ng-if="c.status" ng-click="category.showCategoryDetail(c.slug,c.title)"
               ng-repeat="c in cat.categories track by $index">
 
-          <p style="color:black">{{c.id}}</p>
+          <p style="color:black;" class="gujarti">{{c.title}}</p>
 
-         </li>
-         </ul>
+         </div>
+         </div>
 
         </ion-content>
 </ion-view>

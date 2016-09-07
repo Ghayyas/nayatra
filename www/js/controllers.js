@@ -206,49 +206,13 @@ var app = angular.module('netyatra.controllers', [])
       console.log('data is rejected', e);
     });
 
-    _self.showCategoryDetail = function (d) {
-      var jsonString = JSON.stringify(d);
-      var c = jsonString.replace(/[^/\%22]+$/, "");
-
-      $state.go('menu.categoryDetail', {category: jsonString});
-      //  console.log('detail',c);
+    _self.showCategoryDetail = function (query,viewTitle) {
+      var jsonString = JSON.stringify(query);
+      var modifies = JSON.stringify(_self.data);
+      var titleData = JSON.stringify(viewTitle);
+      $state.go('menu.categoryDetail', {category: modifies, value:jsonString, title:titleData});
     };
 
-/*    _self.checkStatus = function (index1, value, index2) {
-      console.log(index1);
-      console.log(index2);
-
-        //var arr = _self.data[index1].categories;
-          if (_self.myArray.indexOf(value) == -1) {
-            _self.myArray.push(value);
-            console.log("first");
-            _self.data[index1].categories[index2].status = true;
-            return true;
-          } else {
-            console.log("second");
-            _self.data[index1].categories[index2].status = false;
-            return true;
-          }
-      };*/
-      // arr = _self.data[index1].categories;
-
-      //for (var i = 0; i < arr.length; i++) {
-        //if (_self.myArray.indexOf(value) != -1) {
-//_self.data[index1-1].categories[index2].status = false;
-  //        return true;
-    //      break;
-      //  }
-      //}
-      //_self.data[index1-1].categories[index2].status = true;
-        //_self.myArray.push(value);
-      //return true;
-
-      /*  if(arr.indexOf(value)==-1){
-       return true;
-       }else{
-       return false;
-       }*/
-    //};
 
 })
 
@@ -264,15 +228,29 @@ var app = angular.module('netyatra.controllers', [])
   .controller('categoryDetailCtrl', function ($stateParams, $state) {
 
     var _self = this;
-    var params = $stateParams.category;
-    var jsonString = JSON.parse(params)
-    _self.data = jsonString;
-    console.log('detail ID', jsonString);
+    _self.data = JSON.parse($stateParams.category);
+    _self.query = JSON.parse($stateParams.value);
+    // console.log('params',$stateParams);
+    _self.viewTitle = JSON.parse($stateParams.title);
+    
+    _self.mainArray = [];
+    // console.log('detail ID', jsonString);
+    
+    for(var i=0;i < _self.data.length; i++){
+      var arr = _self.data[i].categories;
+      for(var j=0; j < arr.length; j++){
+        var newValue = arr[j].slug;
+        if(newValue == _self.query){
+          _self.mainArray.push(_self.data[i]);
+          break;
+        }
+      }
+    }
+    console.log(_self.mainArray);
 
     _self.gotoCategoryDetail = function (d) {
       var jsonString = JSON.stringify(d);
       $state.go('menu.postDetail',{postID:jsonString});
-      console.log('detial deta',d);
     }
 
 
@@ -295,7 +273,6 @@ var app = angular.module('netyatra.controllers', [])
 
         $scope.$on("$ionicView.beforeEnter", function(event, data){
           // handle event
-      //  console.log("State Params: ", data.stateParams);
          var getSpecific = StorageService.getAll();
           for(var i = 0; i < getSpecific.length; i++){
               var jsonID = jsonParse.id;
@@ -303,10 +280,8 @@ var app = angular.module('netyatra.controllers', [])
                 if(jsonID == speci){
                 _self.bookmarked = true;
 
-                  //  console.log('sucess mil gya',jsonParse.id);
           }
            else{
-                  //  console.log('nhn mila');
                    _self.bookmarked = false;
                 }
         }
