@@ -10,7 +10,7 @@
           {{category.categories[0].title}}
           </div> -->
           <div ng-repeat="cat in category.data track by $index">
-          <div class="item noBorder" ng-if="c.status" ng-click="category.showCategoryDetail(c.slug,c.title)"
+          <div class="item noBorder" ng-if="c.status" ng-click="category.showCategoryDetail(c.id,c.title)"
               ng-repeat="c in cat.categories track by $index">
 
           <p style="color:black;" class="gujarti">{{c.title}}</p>

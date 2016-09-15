@@ -1,7 +1,24 @@
 <ion-view view-title="Net Yatra">
   <ion-content style="background-color:#b2b2b2;">
     
-  <ion-tabs  class="tabs-striped tabs-top tabs-background-positive tabs-color-light">
+      <div class="list card" ng-repeat="data in home.data">
+
+  <div class="item item-body item-black row padding" ng-click="home.gotopostDetail(data)">
+ <div class="card">
+    <img ng-src="{{data.attachments[0].url}}" style="width: 200px;height: 100px;">  
+    </div>   
+    
+    <p class="title padding" style="margin-left: 24px;">
+      {{data.title}}
+    </p>
+    <div class="readFullArticle">
+    <p style="color:white;float: right;width: 118px;">Read Full Article</p>
+    </div>
+  </div>
+
+</div>
+    
+  <!--<ion-tabs  class="tabs-striped tabs-top tabs-background-positive tabs-color-light">
 
       <ion-tab>
         <ion-view>
@@ -14,11 +31,11 @@
     <img ng-src="{{data.attachments[0].url}}" style="width: 200px;height: 100px;">  
     </div>   
     
-    <p class="title padding">
+    <p class="title padding" style="margin-left: 24px;">
       {{data.title}}
     </p>
     <div class="readFullArticle">
-    <p style="color:white;">Read Full Article</p>
+    <p style="color:white;float: right;">Read Full Article</p>
     </div>
   </div>
 
@@ -27,7 +44,7 @@
 </ion-view>
       </ion-tab>
       
-    </ion-tabs>
+    </ion-tabs>-->
   
   </ion-content>
 </ion-view>

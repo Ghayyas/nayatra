@@ -36,6 +36,7 @@ netyatraService.service('stopLoading',function($ionicLoading){
    
    this.httpFunc = function() { 
      $http.get('http://netyatra.in/api/get_recent_posts/').then(function(resolved){
+      console.log('resolved',resolved); 
      deffered.resolve(resolved);
   },function(rejected){
     

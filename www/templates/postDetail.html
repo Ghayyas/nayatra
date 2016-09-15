@@ -1,10 +1,40 @@
 <ion-view view-title="Net yatra">
-  <ion-content style="background-color:#b2b2b2;">
-   <div class="card">
+  <ion-nav-buttons side="primary">
+          <!--style="position: absolute;top: 15px;right: 17px;color:white;"-->
+         <div ng-show="!postDetail.bookmarked" ng-click="postDetail.bookmark(postDetail.fullDetail)">
+           <span class="icon ion-bookmark" style="font-size: 33px;"></span>
+</div>
+<!--position: absolute;top: 15px;right: 17px;-->
+<div style="color:#ffc900" ng-show="postDetail.bookmarked" ng-click="postDetail.remove(postDetail.fullDetail)">
+           <span class="icon ion-bookmark" style="font-size: 33px;"></span>
+</div>
+<div ng-click="postDetail.shareFb(postDetail.content)">
+      <i class="icon ion-android-share-alt" style="font-size: 27px;"></i>
+</div>
+    </ion-nav-buttons>
+    <ion-content>
+    
+    
+    <div style="background-color: #387ef5;">
+          <img class="full-image" style="padding-top:10px;" src="./img/sliderlogo.jpg">
+
+    </div>
+
+         <div class="padding gujarti" style="margin-top: 22px;" ng-bind-html="postDetail.content">
+         </div>
+         <div class="padding">
+           <button class="button button-block button-positive" ng-click="postDetail.shareFb(postDetail.content)">
+            <span style="float:left;"> <i class="icon ion-android-share-alt"></i></span>
+            Share This Post
+          </button>
+         </div>
+         
+           <!--{{postDetail.content}}-->
+
+   <!--<div class="card">
 
   <div class="item item-black">
-    <!--<img src="mcfly.jpg">-->
-    <button style="background: blue;color: white;border: none;font-size: 21px;">
+    <button style="background: blue;color: white;border: none;font-size: 21px;" ng-click="postDetail.shareFb(postDetail.content)">
       <i class="icon ion-android-share" style="font-size: 27px;"></i>&nbsp; &nbsp;Share on Facebook
     </button>
      <div style="position: absolute;top: 15px;right: 17px;color:white;" ng-show="!postDetail.bookmarked" ng-click="postDetail.bookmark(postDetail.fullDetail)">
@@ -25,14 +55,12 @@
       <button style="background: blue;color: white;border: none;font-size: 21px;">
       <i class="icon ion-thumbsup"></i>  &nbsp; Like
       </button>
-      <!--<a href="#" class="subdued">1 Like</a>-->
-      <!--<a href="#" class="subdued">5 tweet</a>-->
       <button style="background: blue;color: white;border: none;font-size: 21px; position: absolute;right: 17px;">
         <i class="icon ion-social-twitter"></i> &nbsp;tweet
       </button>
     </p>
   </div>
 
-</div>
+</div>-->
   </ion-content>
 </ion-view>

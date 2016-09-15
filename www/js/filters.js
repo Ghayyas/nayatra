@@ -13,6 +13,7 @@ app.filter('contentParse',function(){
   
   return function(input){
     var output = input.replace(/(<([^>]+)>)/ig,"");
+    // var output = input.replace (/(^")|("$)/g, '');
     return output;
   }
 });

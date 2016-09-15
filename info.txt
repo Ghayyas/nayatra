@@ -1,0 +1,173 @@
+Node version: v4.5.0
+
+Cordova version: 6.3.0
+
+Config.xml file: 
+
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.teamclouders.netyatra630709" version="0.0.1" xmlns="http://teamclouders.com" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>netyatra</name>
+    <description>
+        An Team Clouders Project
+    </description>
+    <author email="ghayyas@teamclouders.com" href="http://www.teamclouders.com/">
+      Ghayyas Mubashir
+    </author>
+    <content src="index.html" />
+    <access origin="*" />
+    <preference name="webviewbounce" value="false" />
+    <preference name="UIWebViewBounce" value="false" />
+    <preference name="DisallowOverscroll" value="true" />
+    <preference name="FadeSplashScreenDuration" value="6000" />
+    <preference name="android-minSdkVersion" value="16" />
+    <preference name="BackupWebStorage" value="none" />
+    <preference name="SplashScreen" value="screen" />
+    <feature name="StatusBar">
+        <param name="ios-package" onload="true" value="CDVStatusBar" />
+    </feature>
+    <plugin name="cordova-plugin-device" spec="~1.1.2" />
+    <plugin name="cordova-plugin-console" spec="~1.0.3" />
+    <plugin name="cordova-plugin-whitelist" spec="~1.2.2" />
+    <plugin name="ionic-plugin-keyboard" spec="~2.2.1" />
+    <platform name="android">
+        <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />
+        <icon density="mdpi" src="resources/android/icon/drawable-mdpi-icon.png" />
+        <icon density="hdpi" src="resources/android/icon/drawable-hdpi-icon.png" />
+        <icon density="xhdpi" src="resources/android/icon/drawable-xhdpi-icon.png" />
+        <icon density="xxhdpi" src="resources/android/icon/drawable-xxhdpi-icon.png" />
+        <icon density="xxxhdpi" src="resources/android/icon/drawable-xxxhdpi-icon.png" />
+        <splash density="land-ldpi" src="resources/android/splash/drawable-land-ldpi-screen.png" />
+        <splash density="land-mdpi" src="resources/android/splash/drawable-land-mdpi-screen.png" />
+        <splash density="land-hdpi" src="resources/android/splash/drawable-land-hdpi-screen.png" />
+        <splash density="port-ldpi" src="resources/android/splash/drawable-port-ldpi-screen.png" />
+        <splash density="port-mdpi" src="resources/android/splash/drawable-port-mdpi-screen.png" />
+        <splash density="port-hdpi" src="resources/android/splash/drawable-port-hdpi-screen.png" />
+        <splash density="port-xhdpi" src="resources/android/splash/drawable-port-xhdpi-screen.png" />
+        <splash density="port-xxhdpi" src="resources/android/splash/drawable-port-xxhdpi-screen.png" />
+    </platform>
+    <icon src="resources/android/icon/drawable-xhdpi-icon.png" />
+    <plugin name="cordova-plugin-x-socialsharing" spec="https://github.com/EddyVerbruggen/SocialSharing-PhoneGap-Plugin.git" />
+    <plugin name="cordova-plugin-apprate" spec="https://github.com/pushandplay/cordova-plugin-apprate.git" />
+    <plugin name="cordova-plugin-inappbrowser" spec="~1.4.0" />
+    <plugin name="cordova-plugin-splashscreen" spec="~3.2.2" />
+    <plugin name="cordova-plugin-statusbar" spec="~2.1.3" />
+    <plugin name="phonegap-plugin-push" spec="~1.8.1">
+        <variable name="SENDER_ID" value="64785100559" />
+    </plugin>
+    <plugin name="cordova-plugin-google-analytics" spec="https://github.com/danwilson/google-analytics-plugin.git" />
+</widget>
+
+
+Plugins: 
+
+cordova-plugin-apprate,cordova-plugin-console,cordova-plugin-device,cordova-plugin-dialogs,cordova-plugin-globalization,cordova-plugin-google-analytics,cordova-plugin-inappbrowser,cordova-plugin-splashscreen,cordova-plugin-statusbar,cordova-plugin-whitelist,cordova-plugin-x-socialsharing,ionic-plugin-keyboard,phonegap-plugin-push
+
+Android platform:
+
+Available Android targets:
+----------
+id: 1 or "android-18"
+     Name: Android 4.3.1
+     Type: Platform
+     API level: 18
+     Revision: 3
+     Skins: HVGA, QVGA, WQVGA400, WQVGA432, WSVGA, WVGA800 (default), WVGA854, WXGA720, WXGA800, WXGA800-7in
+ Tag/ABIs : default/armeabi-v7a, default/x86
+----------
+id: 2 or "android-19"
+     Name: Android 4.4.2
+     Type: Platform
+     API level: 19
+     Revision: 4
+     Skins: HVGA, QVGA, WQVGA400, WQVGA432, WSVGA, WVGA800 (default), WVGA854, WXGA720, WXGA800, WXGA800-7in
+ Tag/ABIs : default/armeabi-v7a, default/x86
+----------
+id: 3 or "android-23"
+     Name: Android 6.0
+     Type: Platform
+     API level: 23
+     Revision: 3
+     Skins: HVGA, QVGA, WQVGA400, WQVGA432, WSVGA, WVGA800 (default), WVGA854, WXGA720, WXGA800, WXGA800-7in, AndroidWearRound, AndroidWearRound360x360, AndroidWearRound400x400, AndroidWearRound480x480, AndroidWearRoundChin320x290, AndroidWearRoundChin360x325, AndroidWearRoundChin360x326, AndroidWearRoundChin360x330, AndroidWearSquare, AndroidWearSquare320x320, AndroidWearRound, AndroidWearRound360x360, AndroidWearRound400x400, AndroidWearRound480x480, AndroidWearRoundChin320x290, AndroidWearRoundChin360x325, AndroidWearRoundChin360x326, AndroidWearRoundChin360x330, AndroidWearSquare, AndroidWearSquare320x320
+ Tag/ABIs : android-tv/armeabi-v7a, android-tv/x86, android-wear/armeabi-v7a, android-wear/x86, default/armeabi-v7a, default/x86, default/x86_64, google_apis/armeabi-v7a, google_apis/x86, google_apis/x86_64
+----------
+id: 4 or "Google Inc.:Google APIs:18"
+     Name: Google APIs
+     Type: Add-On
+     Vendor: Google Inc.
+     Revision: 4
+     Description: Android + Google APIs
+     Based on Android 4.3.1 (API level 18)
+     Libraries:
+      * com.android.future.usb.accessory (usb.jar)
+          API for USB Accessories
+      * com.google.android.media.effects (effects.jar)
+          Collection of video effects
+      * com.google.android.maps (maps.jar)
+          API for Google Maps
+     Skins: HVGA, QVGA, WQVGA400, WQVGA432, WSVGA, WVGA800 (default), WVGA854, WXGA720, WXGA800, WXGA800-7in
+ Tag/ABIs : default/armeabi-v7a
+----------
+id: 5 or "Google Inc.:Glass Development Kit Preview:19"
+     Name: Glass Development Kit Preview
+     Type: Add-On
+     Vendor: Google Inc.
+     Revision: 11
+     Description: Preview of the Glass Development Kit
+     Based on Android 4.4.2 (API level 19)
+     Libraries:
+      * com.google.android.glass (gdk.jar)
+          APIs for Glass Development Kit Preview
+     Skins: HVGA, QVGA, WQVGA400, WQVGA432, WSVGA, WVGA800 (default), WVGA854, WXGA720, WXGA800, WXGA800-7in
+ Tag/ABIs : no ABIs.
+----------
+id: 6 or "Google Inc.:Google APIs (x86 System Image):19"
+     Name: Google APIs (x86 System Image)
+     Type: Add-On
+     Vendor: Google Inc.
+     Revision: 18
+     Description: Android x86 + Google APIs
+     Based on Android 4.4.2 (API level 19)
+     Libraries:
+      * com.android.future.usb.accessory (usb.jar)
+          API for USB Accessories
+      * com.google.android.media.effects (effects.jar)
+          Collection of video effects
+      * com.google.android.maps (maps.jar)
+          API for Google Maps
+     Skins: HVGA, QVGA, WQVGA400, WQVGA432, WSVGA, WVGA800 (default), WVGA854, WXGA720, WXGA800, WXGA800-7in
+ Tag/ABIs : default/x86
+----------
+id: 7 or "Google Inc.:Google APIs:19"
+     Name: Google APIs
+     Type: Add-On
+     Vendor: Google Inc.
+     Revision: 18
+     Description: Android + Google APIs
+     Based on Android 4.4.2 (API level 19)
+     Libraries:
+      * com.android.future.usb.accessory (usb.jar)
+          API for USB Accessories
+      * com.google.android.media.effects (effects.jar)
+          Collection of video effects
+      * com.google.android.maps (maps.jar)
+          API for Google Maps
+     Skins: HVGA, QVGA, WQVGA400, WQVGA432, WSVGA, WVGA800 (default), WVGA854, WXGA720, WXGA800, WXGA800-7in
+ Tag/ABIs : default/armeabi-v7a
+----------
+id: 8 or "Google Inc.:Google APIs:23"
+     Name: Google APIs
+     Type: Add-On
+     Vendor: Google Inc.
+     Revision: 1
+     Description: Android + Google APIs
+     Based on Android 6.0 (API level 23)
+     Libraries:
+      * com.android.future.usb.accessory (usb.jar)
+          API for USB Accessories
+      * com.google.android.media.effects (effects.jar)
+          Collection of video effects
+      * com.google.android.maps (maps.jar)
+          API for Google Maps
+     Skins: HVGA, QVGA, WQVGA400, WQVGA432, WSVGA, WVGA800 (default), WVGA854, WXGA720, WXGA800, WXGA800-7in, AndroidWearRound, AndroidWearRound360x360, AndroidWearRound400x400, AndroidWearRound480x480, AndroidWearRoundChin320x290, AndroidWearRoundChin360x325, AndroidWearRoundChin360x326, AndroidWearRoundChin360x330, AndroidWearSquare, AndroidWearSquare320x320, AndroidWearRound, AndroidWearRound360x360, AndroidWearRound400x400, AndroidWearRound480x480, AndroidWearRoundChin320x290, AndroidWearRoundChin360x325, AndroidWearRoundChin360x326, AndroidWearRoundChin360x330, AndroidWearSquare, AndroidWearSquare320x320
+ Tag/ABIs : no ABIs.
+
