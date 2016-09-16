@@ -1,12 +1,11 @@
 <ion-view view-title="{{categoryDetail.viewTitle}}">
     <ion-content style="background-color:#b2b2b2;">
         
-   <div  ng-repeat="cat in categoryDetail.mainArray">   
-     <div class="list card" ng-click="categoryDetail.gotoCategoryDetail(cat)">
-<!--ng-click="categoryDetail.gotoCategoryDetail(categoryDetail.data)"-->
+   <!--<div  ng-repeat="cat in categoryDetail.mainArray">   
+     <div class="list card postCard" ng-click="categoryDetail.gotoCategoryDetail(cat)">
   <div class="item item-body item-black row padding" >
- <div class="card">
-    <img ng-src="{{cat.attachments[0].url}}" style="width: 200px;height: 100px;">  
+ <div class="card cardwidth">
+    <img ng-src="{{cat.attachments[0].url}}" style="height: 100px;">  
     </div>   
     
     <p class="title padding gujarti">
@@ -18,6 +17,28 @@
   </div>
 
 </div>
+</div>-->
+
+
+
+
+
+
+<div class="list card postCard" ng-repeat="cat in categoryDetail.mainArray">
+
+  <div class="item item-body item-black row" ng-click="categoryDetail.gotoCategoryDetail(cat)">
+ <div class="card cardwidth">
+    <img ng-src="{{cat.attachments[0].url}}" style="height: 100px;">  
+    </div>   
+     
+    <p class="title" style="margin-left: 24px; margin-top:7px;">
+      {{cat.title}}
+    </p>
+    <div class="readFullArticle">
+    <p style="color:white;float: right;width: 118px;">Read Full Article</p>
+    </div>
+  </div>
+
 </div>
 
 </ion-content>

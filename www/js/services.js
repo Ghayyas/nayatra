@@ -33,11 +33,12 @@ netyatraService.service('stopLoading',function($ionicLoading){
   netyatraService.service('httpRequest',function($http,$q){
  
    var deffered = $q.defer();
-   
+  //  var q = 1;
+  
    this.httpFunc = function() { 
-     $http.get('http://netyatra.in/api/get_recent_posts/').then(function(resolved){
-      console.log('resolved',resolved); 
-     deffered.resolve(resolved);
+     $http.get('http://netyatra.in/?json=get_recent_posts&count=').then(function(resolved){
+      // console.log('resolved'); 
+       deffered.resolve(resolved);
   },function(rejected){
     
     deffered.reject(rejected);
@@ -47,6 +48,29 @@ netyatraService.service('stopLoading',function($ionicLoading){
  }
    
 });
+
+
+/**
+ * 
+ * Http again call Service
+ * 
+ */
+
+netyatraService.service('httpAgain',function($http,$q){
+  var defer = $q.defer();
+  this.http = function(c){
+    console.log('service is ',c);
+    $http.get('http://netyatra.in/?json=get_recent_posts&count='+ c).then(function(r){
+      // console.log('sending posts are ',r);
+      defer.resolve(r);
+    },function(e){
+      defer.reject(e);
+    });
+    
+    return defer.promise;
+  }
+})
+
 
 
 /**

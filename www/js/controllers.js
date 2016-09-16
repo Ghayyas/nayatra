@@ -155,21 +155,53 @@ var app = angular.module('netyatra.controllers', [])
    *
   */
   
-.controller('homeCtrl', function (showLoading, httpRequest, alertService, stopLoading, $state) {
+.controller('homeCtrl', function (showLoading,httpRequest, alertService, stopLoading, $http, $state,httpAgain,$timeout,$scope) {
 
     var _self = this;
+    
     // handle event
+    _self.desibleLoadBtn = false;
+    var c;
+    var totalCounts;
+    
+    // _self.c = 10;
+    _self.load = function(){
+    // _self.data = [];
     showLoading.show();
-    httpRequest.httpFunc().then(function (r) {
+    c = 10;
+     httpRequest.httpFunc().then(function(d){
+       stopLoading.hide();
+      //  console.log('data',_self.data);.
+     _self.data = d.data.posts;  
+     totalCounts = d.data.count_total;     
+      
+      },function(e){
+            stopLoading.hide();
+            // $scope.$broadcast('scroll.infiniteScrollComplete');	
+         
+       }) 
+    }
+_self.load();
+          
+    _self.loadMore = function(){
+      showLoading.show();
+      c = c + 10;
+     
+    $http.get('http://netyatra.in/?json=get_recent_posts&count='+ c).then(function(r){
+      console.log('sending posts are ',r);
+      stopLoading.hide();
+
       _self.data = r.data.posts;
+       if(r.data.count == totalCounts){
+       alertService.showAlert('Sorry',"Sorry no more data is avalible");
+    }
+    },function(e){
       stopLoading.hide();
-    }, function (e) {
-      stopLoading.hide();
-      alertService.showAlert('Error!', "Make sure you are connected to internet")
     });
-
-
-
+         
+  }
+    
+    
     _self.gotopostDetail = function (data) {
       var jsonString = JSON.stringify(data);
 
@@ -185,13 +217,16 @@ var app = angular.module('netyatra.controllers', [])
    *
    */
 
-   .controller('categoryCtrl', function ($stateParams, showLoading, httpRequest, alertService, stopLoading, $state) {
+   .controller('categoryCtrl', function ($stateParams, showLoading, httpRequest, alertService, stopLoading, $state,httpAgain) {
     var _self = this;
-
+    var totalPost;
     showLoading.show();
     httpRequest.httpFunc().then(function (r) {
-      _self.data = r.data.posts;
-      _self.myArray = [];
+      totalPost = r.data.count_total;
+      
+      httpAgain.http(totalPost).then(function(d){
+        _self.data = d.data.posts;
+       _self.myArray = [];
 
 
       //Ye code UNIQUE kar raha hai
@@ -208,6 +243,12 @@ var app = angular.module('netyatra.controllers', [])
         }
       }
       stopLoading.hide();
+      
+      },function(e){
+        stopLoading.hide();
+      alertService.showAlert('Error!', "Make sure you are connected to internet")
+      })
+
     }, function (e) {
       stopLoading.hide();
       alertService.showAlert('Error!', "Make sure you are connected to internet");
@@ -321,6 +362,15 @@ var app = angular.module('netyatra.controllers', [])
             .then(function(s){
             },function(e){
             });
+    //     setTimeout(function() {
+    //      $cordovaSocialSharing.share("Net Yatra", null, null, "https://play.google.com/store/apps/details?id=com.deucen.netyatraa");
+    // }, 300);
+    }
+    
+    _self.shareAnyWhere = function(d){
+      setTimeout(function() {
+         $cordovaSocialSharing.share("Net Yatra", null, null, "https://play.google.com/store/apps/details?id=com.deucen.netyatraa");
+    }, 300);
     }
       
       

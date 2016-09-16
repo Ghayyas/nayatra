@@ -49,7 +49,7 @@ $rootScope.$on('$stateChangeSuccess', function () {
       // alert('google analytics avalible');  
   } else {
       console.log("Google Analytics Unavailable");
-      alert('google analytics not avalible');
+      // alert('google analytics not avalible');
     }
   });
     
@@ -271,5 +271,5 @@ $rootScope.$on('$stateChangeSuccess', function () {
     }
   })
  
-  $urlRouterProvider.otherwise('/menu/home');
+  $urlRouterProvider.otherwise('/menu/category');
 });

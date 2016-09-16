@@ -4,11 +4,9 @@
 }*/
 @font-face {
     font-family: 'Aakar';
-    src: url('Aakar-Medium.eot');
+    
     src: local('Aakar'),
-         url('Aakar?#iefix') format('embedded-opentype'),
-         url('Aakar-Medium.woff') format('woff'),
-         url('aakar-medium.ttf') format('truetype');
+         url('gujarati.ttf') format('truetype');
     font-weight: lighter;
     font-style: normal;
 }
@@ -24,11 +22,11 @@ ion-content{
 .title{
   font-family:'Aakar';
   color: white !important;
-  font-size: 20px !important;
+  font-size: 18px !important;
 }
 .gujarti{
   font-family: 'Aakar';
-  font-size: 22px;
+  font-size: 14px;
 }
 
 .removeBottomPadding{
@@ -68,7 +66,7 @@ ion-content{
 }
 .readFullArticle{
    position: absolute;
-    bottom: 24px;
+    bottom: 9px;
     left: 65%;
     width: 33%;
     
@@ -95,6 +93,17 @@ ul > li{
 img{
   width: 100%;
 }
+.cardwidth{
+  width: 200px;
+  margin-top: 7px;
+  margin-bottom: 10px;
+}
+.postCard{
+      padding-top: 0;
+      padding-bottom: 0;
+      margin-top: 10px;
+      margin-bottom: 0;
+ }
 /*a.tab-item {
 padding-left: 2%;
     padding-right: 12%;

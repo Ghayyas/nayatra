@@ -1,14 +1,13 @@
 <ion-view view-title="Net Yatra">
   <ion-content style="background-color:#b2b2b2;">
-    
-      <div class="list card" ng-repeat="data in home.data">
+      <div class="list card postCard" ng-repeat="data in home.data track by $index">
 
-  <div class="item item-body item-black row padding" ng-click="home.gotopostDetail(data)">
- <div class="card">
-    <img ng-src="{{data.attachments[0].url}}" style="width: 200px;height: 100px;">  
+  <div class="item item-body item-black row" ng-click="home.gotopostDetail(data)">
+ <div class="card cardwidth">
+    <img ng-src="{{data.attachments[0].url}}" style="height: 100px;">  
     </div>   
-    
-    <p class="title padding" style="margin-left: 24px;">
+     
+    <p class="title" style="margin-left: 24px; margin-top:7px;">
       {{data.title}}
     </p>
     <div class="readFullArticle">
@@ -17,34 +16,10 @@
   </div>
 
 </div>
-    
-  <!--<ion-tabs  class="tabs-striped tabs-top tabs-background-positive tabs-color-light">
-
-      <ion-tab>
-        <ion-view>
-        <ion-content class="hasmyHead">
-
-         <div class="list card" ng-repeat="data in home.data">
-
-  <div class="item item-body item-black row padding" ng-click="home.gotopostDetail(data)">
- <div class="card">
-    <img ng-src="{{data.attachments[0].url}}" style="width: 200px;height: 100px;">  
-    </div>   
-    
-    <p class="title padding" style="margin-left: 24px;">
-      {{data.title}}
-    </p>
-    <div class="readFullArticle">
-    <p style="color:white;float: right;">Read Full Article</p>
-    </div>
+<div class="padding" ng-if="home.data">
+    <button class="button button-block button-positive" ng-click="home.loadMore()">Load more</button>
+  <!--<ion-infinite-scroll ng-if="!home.noMoreItemsAvailable"
+       on-infinite="home.loadMoreData()" distance="1%"></ion-infinite-scroll>-->
   </div>
-
-</div>
-</ion-content>
-</ion-view>
-      </ion-tab>
-      
-    </ion-tabs>-->
-  
   </ion-content>
 </ion-view>
