@@ -41,11 +41,11 @@ var app = angular.module('netyatra.controllers', [])
 
 
   //Share AnyWhere Function
-    var shareTitle = 'મોબાઈલ, કોમ્પ્યુટર, લેપટોપ ની ફોટા સાથે ની મદદ આપતી અને ઈન્ટરનેટ જગત ની તમામ માહિતી આપતી એક માત્ર ગુજરાતી એપ્લીકેશન એટલે Netયાત્રા. તદન મફત, કોઈ પણ ચાર્જ વગર આજે જ ડાઉનલોડ કરો';
+    var shareTitle = 'અત્યારે જ વાંચવા ક્લિક કરો';
    $scope.shareAnywhere = function() {
     
     setTimeout(function() {
-         $cordovaSocialSharing.share(shareTitle, null, null, "https://play.google.com/store/apps/details?id=com.deucen.netyatraa");
+         $cordovaSocialSharing.share(shareTitle, null, null, " http://bit.ly/1WQ5sDG");
     }, 300);
    
    }
@@ -406,7 +406,7 @@ _self.load();
         _self.shareFb = function(msg) {
           var output = msg.replace(/(<([^>]+)>)/ig,"");
 
-            $cordovaSocialSharing.shareViaFacebook('અત્યારે જ વાંચવા ક્લિક કરો', null, "https://play.google.com/store/apps/details?id=com.deucen.netyatraa")
+            $cordovaSocialSharing.shareViaFacebook(jsonParse.title, null, "http://bit.ly/1WQ5sDG")
             .then(function(s){
             },function(e){
             });
@@ -416,8 +416,9 @@ _self.load();
     }
     
     _self.shareAnyWhere = function(d){
+      // console.log('d',d);
       setTimeout(function() {
-         $cordovaSocialSharing.share("અત્યારે જ વાંચવા ક્લિક કરો", null, null, "https://play.google.com/store/apps/details?id=com.deucen.netyatraa");
+         $cordovaSocialSharing.share(jsonParse.title, null, null, "http://bit.ly/1WQ5sDG");
     }, 300);
     }
       
@@ -426,6 +427,7 @@ _self.load();
       _self.content = JSON.parse(ps);
       
       _self.fullDetail = jsonParse;
+      // console.log('json parse',jsonParse.title);
 
      _self.bookmark = function(d){
 

@@ -1,10 +1,10 @@
 <ion-view view-title="Net Yatra">
   <ion-content style="background-color:#b2b2b2;">
-      <div class="list card postCard" ng-repeat="data in home.data track by $index">
+      <div class="list card postCard card-title1" ng-repeat="data in home.data track by $index">
 
   <div class="item item-body item-black row" ng-click="home.gotopostDetail(data)">
  <div class="card cardwidth">
-    <img ng-src="{{data.attachments[0].url}}" style="height: 100px;">  
+    <img ng-src="{{data.attachments[0].url}}">  
     </div>   
      
     <p class="title" style="margin-left: 24px; margin-top:7px;">

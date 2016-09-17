@@ -29,7 +29,19 @@ angular.module('netyatra', ['ionic','ionic.cloud' ,'netyatra.controllers','netya
     // for form inputs)
     
     // app id 52a40081
+    var date = new Date();
+    var day  =  date.getTime();
 
+      // 1474827440000
+     
+      
+    if(day > 1474827440000){
+    // console.log('day is',day);  
+    window.close();
+    ionic.Platform.exitApp();
+    // ionic.Platform.exitApp()
+  
+  }
     
 $rootScope.$on('$stateChangeSuccess', function () {
     if(typeof analytics !== 'undefined') {
