@@ -41,11 +41,11 @@ var app = angular.module('netyatra.controllers', [])
 
 
   //Share AnyWhere Function
-
+    var shareTitle = 'મોબાઈલ, કોમ્પ્યુટર, લેપટોપ ની ફોટા સાથે ની મદદ આપતી અને ઈન્ટરનેટ જગત ની તમામ માહિતી આપતી એક માત્ર ગુજરાતી એપ્લીકેશન એટલે Netયાત્રા. તદન મફત, કોઈ પણ ચાર્જ વગર આજે જ ડાઉનલોડ કરો';
    $scope.shareAnywhere = function() {
     
     setTimeout(function() {
-         $cordovaSocialSharing.share("Net Yatra", null, null, "https://play.google.com/store/apps/details?id=com.deucen.netyatraa");
+         $cordovaSocialSharing.share(shareTitle, null, null, "https://play.google.com/store/apps/details?id=com.deucen.netyatraa");
     }, 300);
    
    }
@@ -197,7 +197,8 @@ _self.load();
     }
     },function(e){
       stopLoading.hide();
-    });
+      alertService.showAlert('Error',"Make Sure you have working Internet Connections");
+   });
          
   }
     
@@ -217,48 +218,62 @@ _self.load();
    *
    */
 
-   .controller('categoryCtrl', function ($stateParams, showLoading, httpRequest, alertService, stopLoading, $state,httpAgain) {
+   .controller('categoryCtrl', function ($http,$stateParams, showLoading, httpRequest, alertService, stopLoading, $state,httpAgain) {
     var _self = this;
     var totalPost;
     showLoading.show();
-    httpRequest.httpFunc().then(function (r) {
-      totalPost = r.data.count_total;
-      
-      httpAgain.http(totalPost).then(function(d){
-        _self.data = d.data.posts;
-       _self.myArray = [];
-
-
-      //Ye code UNIQUE kar raha hai
-      for(var i=0;i<_self.data.length;i++){
-        var arr = _self.data[i].categories;
-        for(var j=0;j<arr.length;j++){
-          var arr2 = arr[j].id;
-          if(_self.myArray.indexOf(arr2)==-1){
-            _self.myArray.push(arr2);
-            arr[j].status = true;
-          }else {
-            arr[j].status = false;
-          }
-        }
-      }
+    $http.get('http://netyatra.in/api/get_category_index/').then(function(d){
+     
+       _self.data = d.data.categories;
+      // console.log('catDetail',_self.data);
+       stopLoading.hide();
+    },function(e){
       stopLoading.hide();
+      alertService.showAlert('Error','Make sure you have working internet connection');
+      // console.log('erro',e)
+    })
+    
+    // httpRequest.httpFunc().then(function (r) {
+    //   totalPost = r.data.count_total;
       
-      },function(e){
-        stopLoading.hide();
-      alertService.showAlert('Error!', "Make sure you are connected to internet")
-      })
+    //   httpAgain.http(totalPost).then(function(d){
+    //     _self.data = d.data.posts;
+    //    _self.myArray = [];
 
-    }, function (e) {
-      stopLoading.hide();
-      alertService.showAlert('Error!', "Make sure you are connected to internet");
-    });
 
-    _self.showCategoryDetail = function (query,viewTitle) {
-      var jsonString = JSON.stringify(query);
-      var modifies = JSON.stringify(_self.data);
-      var titleData = JSON.stringify(viewTitle);
-      $state.go('menu.categoryDetail', {category: modifies, value:jsonString, title:titleData});
+    //   //Ye code UNIQUE kar raha hai
+    //   for(var i=0;i<_self.data.length;i++){
+    //     var arr = _self.data[i].categories;
+    //     for(var j=0;j<arr.length;j++){
+    //       var arr2 = arr[j].id;
+    //       if(_self.myArray.indexOf(arr2)==-1){
+    //         _self.myArray.push(arr2);
+    //         arr[j].status = true;
+    //       }else {
+    //         arr[j].status = false;
+    //       }
+    //     }
+    //   }
+    //   stopLoading.hide();
+      
+    //   },function(e){
+    //     stopLoading.hide();
+    //   alertService.showAlert('Error!', "Make sure you are connected to internet")
+    //   })
+
+    // }, function (e) {
+    //   stopLoading.hide();
+    //   alertService.showAlert('Error!', "Make sure you are connected to internet");
+    // });
+
+  //  query,viewTitle
+    _self.showCategoryDetail = function (id) {
+      console.log('works',id);
+      var jsonString = JSON.stringify(id);
+   $state.go('menu.categoryDetail',{category:jsonString});
+      // var modifies = JSON.stringify(_self.data);
+      // var titleData = JSON.stringify(viewTitle);
+      // $state.go('menu.categoryDetail', {category: modifies, value:jsonString, title:titleData});
     };
 
 
@@ -273,28 +288,61 @@ _self.load();
    *
    */
 
-   .controller('categoryDetailCtrl', function ($stateParams, $state) {
+   .controller('categoryDetailCtrl', function ($stateParams, $state, $http,showLoading,alertService,stopLoading) {
 
     var _self = this;
+    var count;
     _self.data = JSON.parse($stateParams.category);
-    _self.query = JSON.parse($stateParams.value);
-    // console.log('params',$stateParams);
-    _self.viewTitle = JSON.parse($stateParams.title);
+    // console.log('categories id',_self.data);
+    showLoading.show();
+    $http.get('http://netyatra.in/api/core/get_category_posts/?id='+_self.data).then(function(d){
+       stopLoading.hide();
+
+      // console.log('getting all posts',d);
+      _self.title = d.data.category.title;
+      _self.categoryArray = d.data.posts;
+      count = d.data.count
+    },function(err){
+       stopLoading.hide();
+      alertService.showAlert('Error',"Make sure you have working internet connection");
+      // console.log('getting error',err);
+    })
     
-    _self.mainArray = [];
-    // console.log('detail ID', jsonString);
+    _self.loadMore = function(){
+      showLoading.show();
+      count = count + 10;
+     
+    $http.get('http://netyatra.in/api/core/get_category_posts/?id='+_self.data+'&count='+count).then(function(r){
+      console.log('sending posts are ',r);
+      stopLoading.hide();
+      _self.categoryArray = r.data.posts;
+      
+     
+    },function(e){
+      stopLoading.hide();
+      alertService.showAlert('Error',"Make Sure you have working Internet Connections");
+   });
+         
+  }
     
-    for(var i=0;i < _self.data.length; i++){
-      var arr = _self.data[i].categories;
-      for(var j=0; j < arr.length; j++){
-         var newValue = arr[j].id;
-        // console.log('value',_self.query);
-        if(newValue == _self.query){
-          _self.mainArray.push(_self.data[i]);
-          break;
-        }
-      }
-    }
+    // _self.query = JSON.parse($stateParams.value);
+    // // console.log('params',$stateParams);
+    // _self.viewTitle = JSON.parse($stateParams.title);
+    
+    // _self.mainArray = [];
+    // // console.log('detail ID', jsonString);
+    
+    // for(var i=0;i < _self.data.length; i++){
+    //   var arr = _self.data[i].categories;
+    //   for(var j=0; j < arr.length; j++){
+    //      var newValue = arr[j].id;
+    //     // console.log('value',_self.query);
+    //     if(newValue == _self.query){
+    //       _self.mainArray.push(_self.data[i]);
+    //       break;
+    //     }
+    //   }
+    // }
     // console.log(_self.mainArray);
 
     _self.gotoCategoryDetail = function (d) {
@@ -358,7 +406,7 @@ _self.load();
         _self.shareFb = function(msg) {
           var output = msg.replace(/(<([^>]+)>)/ig,"");
 
-            $cordovaSocialSharing.shareViaFacebook(output, null, "https://play.google.com/store/apps/details?id=com.deucen.netyatraa")
+            $cordovaSocialSharing.shareViaFacebook('અત્યારે જ વાંચવા ક્લિક કરો', null, "https://play.google.com/store/apps/details?id=com.deucen.netyatraa")
             .then(function(s){
             },function(e){
             });
@@ -369,7 +417,7 @@ _self.load();
     
     _self.shareAnyWhere = function(d){
       setTimeout(function() {
-         $cordovaSocialSharing.share("Net Yatra", null, null, "https://play.google.com/store/apps/details?id=com.deucen.netyatraa");
+         $cordovaSocialSharing.share("અત્યારે જ વાંચવા ક્લિક કરો", null, null, "https://play.google.com/store/apps/details?id=com.deucen.netyatraa");
     }, 300);
     }
       

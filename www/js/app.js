@@ -199,7 +199,7 @@ $rootScope.$on('$stateChangeSuccess', function () {
    }
   })
   .state('menu.categoryDetail',{
-   url:'/detail/:category/:value/:title',
+   url:'/detail/:category',
    views:{
      'menuContent':{
        templateUrl: 'templates/categoryDetail.html',

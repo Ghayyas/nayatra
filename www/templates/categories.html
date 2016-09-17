@@ -9,12 +9,13 @@
       <!--<div class="list card" ng-repeat="category in category.data">
           {{category.categories[0].title}}
           </div> -->
-          <div ng-repeat="cat in category.data track by $index">
-          <div class="item noBorder" ng-if="c.status" ng-click="category.showCategoryDetail(c.id,c.title)"
-              ng-repeat="c in cat.categories track by $index">
+           <!--ng-if="c.status" ng-click="category.showCategoryDetail(c.id,c.title)"
+              ng-repeat="c in cat.categories track by $index"-->
+          <div ng-repeat="cat in category.data">
+          <div class="item noBorder" ng-click="category.showCategoryDetail(cat.id)">
 
           <p style="color:black; font-size:22px; padding-top: 0;
-    padding-bottom: 0;" class="gujarti">{{c.title}}</p>
+    padding-bottom: 0;" class="gujarti">{{cat.title}}</p>
 
          </div>
          </div>

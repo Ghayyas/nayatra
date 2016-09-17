@@ -104,6 +104,9 @@ img{
       margin-top: 10px;
       margin-bottom: 0;
  }
+ .card{
+   border-radius: 20px;
+ }
 /*a.tab-item {
 padding-left: 2%;
     padding-right: 12%;

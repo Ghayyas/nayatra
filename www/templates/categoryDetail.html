@@ -1,4 +1,4 @@
-<ion-view view-title="{{categoryDetail.viewTitle}}">
+<ion-view view-title="{{categoryDetail.title}}">
     <ion-content style="background-color:#b2b2b2;">
         
    <!--<div  ng-repeat="cat in categoryDetail.mainArray">   
@@ -24,7 +24,7 @@
 
 
 
-<div class="list card postCard" ng-repeat="cat in categoryDetail.mainArray">
+<div class="list card postCard" ng-repeat="cat in categoryDetail.categoryArray">
 
   <div class="item item-body item-black row" ng-click="categoryDetail.gotoCategoryDetail(cat)">
  <div class="card cardwidth">
@@ -40,6 +40,10 @@
   </div>
 
 </div>
-
+<div class="padding" ng-if="categoryDetail.categoryArray">
+    <button class="button button-block button-positive" ng-click="categoryDetail.loadMore()">Load more</button>
+  <!--<ion-infinite-scroll ng-if="!home.noMoreItemsAvailable"
+       on-infinite="home.loadMoreData()" distance="1%"></ion-infinite-scroll>-->
+  </div>
 </ion-content>
     </ion-view>
