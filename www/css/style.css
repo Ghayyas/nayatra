@@ -82,13 +82,13 @@ ul > li{
 }
 .detail-content{
     color: white !important;
-    font-size: 22px !important;
+    font-size: 18px !important;
 }
 .tab-item.tab-item-active{
   border: none !important;
 }
 .bar .buttons-right span{
-   margin-left: -30px;
+  margin-left: -13px;
 }
 img{
   width: 100%;
@@ -107,6 +107,12 @@ img{
  }
  .card-title1{
    border-radius: 10px;
+ }
+ .post-title-div{
+    margin-top: 44px;
+    text-align: center;
+    text-decoration: underline;
+   
  }
  
 /*a.tab-item {

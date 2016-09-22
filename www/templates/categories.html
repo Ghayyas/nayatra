@@ -11,10 +11,11 @@
           </div> -->
            <!--ng-if="c.status" ng-click="category.showCategoryDetail(c.id,c.title)"
               ng-repeat="c in cat.categories track by $index"-->
+              <!--<div>{{category.msg}}</div>-->
           <div ng-repeat="cat in category.data">
           <div class="item noBorder" ng-click="category.showCategoryDetail(cat.id)">
 
-          <p style="color:black; font-size:22px; padding-top: 0;
+          <p style="color:black; font-size:18px; padding-top: 0;
     padding-bottom: 0;" class="gujarti">{{cat.title}}</p>
 
          </div>

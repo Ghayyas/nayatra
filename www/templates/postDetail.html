@@ -1,4 +1,4 @@
-<ion-view view-title="Net yatra">
+<ion-view view-title="Net yatra" view-cache="false">
   <ion-nav-buttons side="primary">
           <!--style="position: absolute;top: 15px;right: 17px;color:white;"-->
          <div ng-show="!postDetail.bookmarked" ng-click="postDetail.bookmark(postDetail.fullDetail)">
@@ -8,9 +8,9 @@
 <div style="color:#ffc900" ng-show="postDetail.bookmarked" ng-click="postDetail.remove(postDetail.fullDetail)">
            <span class="icon ion-bookmark" style="font-size: 33px;"></span>
 </div>
-<div ng-click="postDetail.shareFb(postDetail.content)">
+<!--<div ng-click="postDetail.shareFb(postDetail.content)">
       <i class="icon ion-android-share-alt" style="font-size: 27px;"></i>
-</div>
+</div>-->
     </ion-nav-buttons>
     <ion-content>
     
@@ -19,8 +19,10 @@
           <img class="full-image" style="padding-top:10px;" src="./img/sliderlogo.jpg">
 
     </div>
-
-         <div class="padding gujarti" style="margin-top: 22px;" ng-bind-html="postDetail.content">
+    <div class="post-title-div padding">
+      <h2 style="font-family:Aakar;">{{postDetail.postTitle}}</h2>
+    </div>
+         <div class="padding gujarti" style="margin-top: 22px;" ng-bind-html="postDetail.content | contentParse">
          </div>
          <div class="padding">
            <button class="button button-block button-positive" ng-click="postDetail.shareAnyWhere(postDetail.content)">

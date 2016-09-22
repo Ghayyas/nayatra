@@ -6,7 +6,7 @@ var app = angular.module('netyatra.controllers', [])
  */
 
  .controller('AppCtrl', function($scope,$cordovaSocialSharing,$cordovaInAppBrowser,$cordovaGoogleAnalytics) {
-
+  
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
   // To listen for when this page is active (for example, to refresh data),
@@ -41,11 +41,11 @@ var app = angular.module('netyatra.controllers', [])
 
 
   //Share AnyWhere Function
-    var shareTitle = 'અત્યારે જ વાંચવા ક્લિક કરો';
+    var shareTitle = 'મોબાઈલ, કોમ્પ્યુટર, લેપટોપ ની ફોટા સાથે ની મદદ આપતી અને ઈન્ટરનેટ જગત ની તમામ માહિતી આપતી એક માત્ર ગુજરાતી એપ્લીકેશન એટલે Netયાત્રા. તદન મફત, કોઈ પણ ચાર્જ વગર આજે જ ડાઉનલોડ કરો';
    $scope.shareAnywhere = function() {
     
     setTimeout(function() {
-         $cordovaSocialSharing.share(shareTitle, null, null, " http://bit.ly/1WQ5sDG");
+         $cordovaSocialSharing.share(shareTitle, null, null, "http://bit.ly/1WQ5sDG");
     }, 300);
    
    }
@@ -53,29 +53,43 @@ var app = angular.module('netyatra.controllers', [])
    // Rate us Function
    
     $scope.RateUs = function(){
-      AppRate.preferences = {
-      openStoreInApp: true,
-      useCustomRateDialog: false,
-      displayAppName: 'Net Yatra',
-      // usesUntilPrompt: 5,
-      promptAgainForEachNewVersion: false,
-      storeAppURL: {
-      ios: '<my_app_id>',
-      android: 'market://details?id=com.deucen.netyatraa',
-      windows: 'ms-windows-store://pdp/?ProductId=<the apps Store ID>',
-      blackberry: 'appworld://content/[App Id]/',
-      windows8: 'ms-windows-store:Review?name=<the Package Family Name of the application>'
-    },
-    customLocale: {
-      title: "Rate us",
-      message: "Would you like to Rate us ?",
-      cancelButtonLabel: "No, Thanks",
-      laterButtonLabel: "Remind Me Later",
-      rateButtonLabel: "Rate It Now"
-    }
-};
+      
+     var options = {
+      location: 'no',
+      clearcache: 'yes',
+      toolbar: 'no',
+      hidden: 'no',
+      clearsessioncache: 'yes'
+    };
+      $cordovaInAppBrowser.open('https://play.google.com/store/apps/details?id=com.deucen.netyatraa', '_blank', options)
+      .then(function(event) {
+        // success
 
-    AppRate.promptForRating(true);
+      })
+      
+//       AppRate.preferences = {
+//       openStoreInApp: true,
+//       useCustomRateDialog: false,
+//       displayAppName: 'Net Yatra',
+//       // usesUntilPrompt: 5,
+//       promptAgainForEachNewVersion: false,
+//       storeAppURL: {
+//       ios: '<my_app_id>',
+//       android: 'market://details?id=com.deucen.netyatraa',
+//       windows: 'ms-windows-store://pdp/?ProductId=<the apps Store ID>',
+//       blackberry: 'appworld://content/[App Id]/',
+//       windows8: 'ms-windows-store:Review?name=<the Package Family Name of the application>'
+//     },
+//     customLocale: {
+//       title: "Rate us",
+//       message: "Would you like to Rate us ?",
+//       cancelButtonLabel: "No, Thanks",
+//       laterButtonLabel: "Remind Me Later",
+//       rateButtonLabel: "Rate It Now"
+//     }
+// };
+
+//     AppRate.promptForRating(true);
 
 };
 
@@ -184,6 +198,7 @@ var app = angular.module('netyatra.controllers', [])
 _self.load();
           
     _self.loadMore = function(){
+   
       showLoading.show();
       c = c + 10;
      
@@ -204,6 +219,7 @@ _self.load();
     
     
     _self.gotopostDetail = function (data) {
+   
       var jsonString = JSON.stringify(data);
 
       $state.go('menu.postDetail', {postID: jsonString});
@@ -218,10 +234,14 @@ _self.load();
    *
    */
 
-   .controller('categoryCtrl', function ($http,$stateParams, showLoading, httpRequest, alertService, stopLoading, $state,httpAgain) {
+   .controller('categoryCtrl', function ($http,$stateParams,$cordovaLocalNotification, showLoading, httpRequest, alertService, stopLoading, $state,httpAgain,$scope,$rootScope) {
+   
     var _self = this;
+    
     var totalPost;
     showLoading.show();
+    // _self.msg = $rootScope.msg;
+    // console.log('rootScope',$rootScope.msg);
     $http.get('http://netyatra.in/api/get_category_index/').then(function(d){
      
        _self.data = d.data.categories;
@@ -232,6 +252,19 @@ _self.load();
       alertService.showAlert('Error','Make sure you have working internet connection');
       // console.log('erro',e)
     })
+// setTimeout(function() {
+//       // console.log('settimeout works');
+//       alert('timemout works');
+//       cordova.plugins.notification.local.schedule({
+//           title: "New Message",
+//           text: "Hi, are you ready? We are waiting.",
+//           //sound: "file://sounds/message.mp3",
+//           // icon: "https://avatars1.githubusercontent.com/u/5948409?v=3&s=96"
+//       });  
+// }, 10000);    
+
+
+
     
     // httpRequest.httpFunc().then(function (r) {
     //   totalPost = r.data.count_total;
@@ -268,7 +301,8 @@ _self.load();
 
   //  query,viewTitle
     _self.showCategoryDetail = function (id) {
-      console.log('works',id);
+   
+      // console.log('works',id);
       var jsonString = JSON.stringify(id);
    $state.go('menu.categoryDetail',{category:jsonString});
       // var modifies = JSON.stringify(_self.data);
@@ -288,20 +322,23 @@ _self.load();
    *
    */
 
-   .controller('categoryDetailCtrl', function ($stateParams, $state, $http,showLoading,alertService,stopLoading) {
-
+   .controller('categoryDetailCtrl', function ($stateParams, $state, $http,showLoading,alertService,stopLoading,$timeout) {
+   
     var _self = this;
     var count;
     _self.data = JSON.parse($stateParams.category);
     // console.log('categories id',_self.data);
     showLoading.show();
     $http.get('http://netyatra.in/api/core/get_category_posts/?id='+_self.data).then(function(d){
-       stopLoading.hide();
-
-      // console.log('getting all posts',d);
+   
       _self.title = d.data.category.title;
       _self.categoryArray = d.data.posts;
       count = d.data.count
+
+     $timeout(function(){
+       stopLoading.hide();
+      },4000)
+       
     },function(err){
        stopLoading.hide();
       alertService.showAlert('Error',"Make sure you have working internet connection");
@@ -309,13 +346,18 @@ _self.load();
     })
     
     _self.loadMore = function(){
+   
       showLoading.show();
       count = count + 10;
      
     $http.get('http://netyatra.in/api/core/get_category_posts/?id='+_self.data+'&count='+count).then(function(r){
-      console.log('sending posts are ',r);
+      // console.log('sending posts are ',r);
+      _self.categoryArray = r.data.posts;  
+
+      $timeout(function(){
       stopLoading.hide();
-      _self.categoryArray = r.data.posts;
+      },4000)
+      
       
      
     },function(e){
@@ -346,8 +388,13 @@ _self.load();
     // console.log(_self.mainArray);
 
     _self.gotoCategoryDetail = function (d) {
+   
       var jsonString = JSON.stringify(d);
+   
+   
       $state.go('menu.postDetail',{postID:jsonString});
+   
+      
     }
 
 
@@ -371,16 +418,22 @@ _self.load();
  *
  */
 
- .controller('postDetailCtrl',function($scope,$stateParams,$rootScope,StorageService,alertService,$cordovaSocialSharing){
-     var _self = this;
+ .controller('postDetailCtrl',function($scope,$stateParams,$rootScope,StorageService,alertService,$cordovaSocialSharing,showLoading,$timeout,stopLoading){
+     
+      var _self = this;
       var params = $stateParams.postID;
       var jsonParse = JSON.parse(params);
 
       // Enter Page is loaded this events will works
-
+    //  console.log('title',jsonParse.title);
+     _self.postTitle = jsonParse.title;
         $scope.$on("$ionicView.beforeEnter", function(event, data){
+          showLoading.show();
           // handle event
           // console.log('json',jsonParse);
+        $timeout(function(){
+          stopLoading.hide();
+        },2000)
          var getSpecific = StorageService.getAll();
           for(var i = 0; i < getSpecific.length; i++){
               var jsonID = jsonParse.id;
@@ -424,7 +477,9 @@ _self.load();
       
       
        var ps = JSON.stringify(jsonParse.content);
-      _self.content = JSON.parse(ps);
+      //  var pdd = JSON.parse(ps);
+      //  console.log('ps',pdd);
+      _self.content = jsonParse.content;//JSON.parse(ps);
       
       _self.fullDetail = jsonParse;
       // console.log('json parse',jsonParse.title);
@@ -481,7 +536,7 @@ _self.load();
  */
 
 .controller('bookmarkCtrl', function($stateParams,StorageService,$state) {
-
+  
        var _self = this;
 
         var getSpecific = StorageService.getAll();
@@ -543,11 +598,22 @@ _self.load();
    */
   
   .controller('aboutCtrl', function () {
-    
-    var _self = this;
+
+        
+      
+        var _self = this;
     _self.content = "નેટયાત્રા - ટેકનોલોજી ની આસપાસ સાથે ફરવા નું એક નવું પ્લેટફોર્મ. જ્યાં તમને મળશે મોબાઈલ થી લઈને લેપટોપ/કોમ્પ્યુટર, નોકિયા થી લઈને એન્ડ્રોઈડ, આઈફોન અને ગેજેટ થી લઈને નવી તમામ ટેકનોલોજી વિશેની જાણકારી અને એ પણ આપણી પોતાની ગુજરાતી ભાષા માં. અને કોઈ પણ સબસ્ક્રિપ્શન ચાર્જીસ કે પૈસા ભર્યા વગર. નેટયાત્રા એટલે એક એવો પ્રવાસ કે જ્યાં દરેક નાના મોટા કંઇક નવું જોશે, જાણશે. આજે જયારે ટેકનોલોજી દરેક ક્ષેત્રમાં ઘુસી રહી છે ત્યારે ટેકનોલોજી સાથે કદમ મિલાવી ને આગળ ચાલવું જ ડાહપણ છે. જો આપણે આ ટેકનોલોજી સાથે નહિ ચાલીએ તો ટેકનોલોજી હરણફાળ સાથે આગળ નીકળી જશે અને આપણને એના ગુલામ બનાવી દેશે. મોબાઈલ ની અવનવી ટ્રીક્સ થી લઈને સારા જરૂરી સોફ્ટવેર વિશેની માહિતી, લેપટોપ કોમ્પ્યુટર ને ફાસ્ટ કરવાની ટ્રીક્સ ની સાથે મોબાઈલ ને સિક્યોર કરવાની ટ્રીક્સ, આઈફોન થી સ્કેન કરવાના ફ્રી સોફ્ટવેર ની માહિતી ની સાથે ગુગલ ગ્લાસ ના ફાયદાઓ વિશેની માહિતી, એન્ડ્રોઈડ રૂટ કરવાની રીત થી લઈને કોમ્પ્યુટર ક્લીન કરવાની વિવિધ રીતો સરળ ગુજરાતી ભાષામાં જરૂરી સ્ક્રીન શોટ સાથે વાંચવા માટેનું એક જ સરનામું એટલે નેટયાત્રા તો શું આપ બધા તૈયાર છો નેટયાત્રા ની આ સફર ખેડવા. કોઈ ટીકીટ, વિઝા ની જરૂર નથી. ફક્ત તમારી મરજી અને ધગશ સાથે રાખજો.";
     
-  })
+      
+  
+
+        
+  })      
+        
+        
+   
+   
+    
 
 
 
