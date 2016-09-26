@@ -9,7 +9,7 @@ angular.module('netyatra', ['ionic','ionic.cloud' ,'netyatra.controllers','netya
 
 
 
-.run(function($ionicPlatform,$ionicPush,$timeout,$cordovaSplashscreen,$state,$rootScope) {
+.run(function($ionicPlatform,$ionicPush,$timeout,$cordovaSplashscreen,$state,$rootScope,$http) {
 
 
 
@@ -25,112 +25,122 @@ angular.module('netyatra', ['ionic','ionic.cloud' ,'netyatra.controllers','netya
       // 1474827440000
      
       
-    if(day > 1474827440000){
-    // console.log('day is',day);  
-    window.close();
-    ionic.Platform.exitApp();
-    // ionic.Platform.exitApp()
-  }
+  //   if(day > 1474827440000){
+  //   // console.log('day is',day);  
+  //   window.close();
+  //   ionic.Platform.exitApp();
+  //   // ionic.Platform.exitApp()
+  // }
   
   
- FCMPlugin.getToken(
-  function(token){
-    window.localStorage.setItem('Device_token',token);
-    // console.log('token recived',token);
-    // alert(token);
-  },
-  function(err){
-    // console.log('error retrieving token: ' + err);
-  }
-)
+//  FCMPlugin.getToken(
+//   function(token){
+//     window.localStorage.setItem('Device_token',token);
+//     // console.log('token recived',token);
+//     // alert(token);
+//   },
+//   function(err){
+//     // console.log('error retrieving token: ' + err);
+//   }
+// )
 
-FCMPlugin.subscribeToTopic('all',function(msg){
-  console.log('successFully subscribeToTopic',msg);
-  // window.alert('successFully subscribeToTopic');
-},function(){
-  // window.alert('error while subscribeToTopic');
-  // console.log('error in subscribeToTopic');
-});
+// FCMPlugin.subscribeToTopic('all',function(msg){
+//   console.log('successFully subscribeToTopic',msg);
+//   // window.alert('successFully subscribeToTopic');
+// },function(){
+//   // window.alert('error while subscribeToTopic');
+//   // console.log('error in subscribeToTopic');
+// });
 
 
-FCMPlugin.onNotification(
-  function(data){
-    console.log('data recived',data.notification);
-    if(data.wasTapped){
-      //Notification was received on device tray and tapped by the user.
-      alert( JSON.stringify(data) );
-    }else{
-      //Notification was received in foreground. Maybe the user needs to be notified.
-      alert( JSON.stringify(data) );
-    }
-  },
-  // callback,
-  function(msg){
-    console.log('onNotification callback successfully registered: ' + msg);
-  },
-  function(err){
-    console.log('Error registering onNotification callback: ' + err);
-  }
-);
+// FCMPlugin.onNotification(
+//   function(data){
+//     console.log('data recived',data.notification);
+//     if(data.wasTapped){
+//       //Notification was received on device tray and tapped by the user.
+//       alert( JSON.stringify(data) );
+//     }else{
+//       //Notification was received in foreground. Maybe the user needs to be notified.
+//       alert( JSON.stringify(data) );
+//     }
+//   },
+//   // callback,
+//   function(msg){
+//     console.log('onNotification callback successfully registered: ' + msg);
+//   },
+//   function(err){
+//     console.log('Error registering onNotification callback: ' + err);
+//   }
+// );
 
 
   
-    //   $ionicPush.register().then(function(t) {
-    //     return $ionicPush.saveToken(t);
-    //   }).then(function(t) {
-    //     console.log('Token saved:', t.token);
+      $ionicPush.register().then(function(t) {
+        return $ionicPush.saveToken(t);
+      }).then(function(t) {
+        console.log('Token saved:', t.token);
       
-    // });
+    });
       
       
      
-    //    $rootScope.$on('cloud:push:notification', function(event, data) {
-    //     console.log('data',data);
-    //     var msg = data.message;
-    //     // $rootScope.msg = msg;
-    //     alert(msg.title + ': ' + msg.text);
-    //   }); 
+       $rootScope.$on('cloud:push:notification', function(event, data) {
+        console.log('data',data);
+        var msg = data.message;
+
+        // console.log('page_path',page_path);
+        // $rootScope.msg = msg;
+        // alert(msg.title + ': ' + msg.text);
+        var payload = data.message.payload.id;
+        if(payload !== 'undefined'){
+          console.log('payload is not undefined')
+          $http.get('http://netyatra.in/api/get_post/?post_id='+payload).then(function(d){
+          var jsonStn = JSON.stringify(d.data.post);
+           console.log('data',d,'jsontring',jsonStn);
+
+            $state.go('menu.postDetail',{postID:jsonStn});
+            
+          },function(e) {
+            console.log('getting error');
+          })
+        }
+      }); 
        
        
        // select the right Ad Id according to platform
-  var admobid = {};
-  if( /(android)/i.test(navigator.userAgent) ) { // for android & amazon-fireos
-    admobid = {
-      banner: 'ca-app-pub-7631554899487555/1555263029', // or DFP format "/6253334/dfp_example_ad"
-      interstitial: 'ca-app-pub-7631554899487555/9166354221'
-    };
-  } else if(/(ipod|iphone|ipad)/i.test(navigator.userAgent)) { // for ios
-    admobid = {
-      banner: 'ca-app-pub-7631554899487555/1555263029', // or DFP format "/6253334/dfp_example_ad"
-      interstitial: 'ca-app-pub-7631554899487555/9166354221'
-    };
-  } else { // for windows phone
-    admobid = {
-      banner: 'ca-app-pub-7631554899487555/1555263029', // or DFP format "/6253334/dfp_example_ad"
-      interstitial: 'ca-app-pub-7631554899487555/9166354221'
-    };
-  }
+  // var admobid = {};
+  // if( /(android)/i.test(navigator.userAgent) ) { // for android & amazon-fireos
+  //   admobid = {
+  //     banner: 'ca-app-pub-7631554899487555/1555263029', // or DFP format "/6253334/dfp_example_ad"
+  //     interstitial: 'ca-app-pub-7631554899487555/9166354221'
+  //   };
+  // } else if(/(ipod|iphone|ipad)/i.test(navigator.userAgent)) { // for ios
+  //   admobid = {
+  //     banner: 'ca-app-pub-7631554899487555/1555263029', // or DFP format "/6253334/dfp_example_ad"
+  //     interstitial: 'ca-app-pub-7631554899487555/9166354221'
+  //   };
+  // } else { // for windows phone
+  //   admobid = {
+  //     banner: 'ca-app-pub-7631554899487555/1555263029', // or DFP format "/6253334/dfp_example_ad"
+  //     interstitial: 'ca-app-pub-7631554899487555/9166354221'
+  //   };
+  // }
   
-  if(AdMob) AdMob.createBanner({
-  adId: admobid.banner,
-  position: AdMob.AD_POSITION.BOTTOM_CENTER,
-  autoShow: true });
+  // if(AdMob) AdMob.createBanner({
+  // adId: admobid.banner,
+  // position: AdMob.AD_POSITION.BOTTOM_CENTER,
+  // autoShow: true });
   
-  // preppare and load ad resource in background, e.g. at begining of game level
-if(AdMob) AdMob.prepareInterstitial( {adId:admobid.interstitial, autoShow:true} );
+//   // preppare and load ad resource in background, e.g. at begining of game level
+// if(AdMob) AdMob.prepareInterstitial( {adId:admobid.interstitial, autoShow:true} );
 
-// show the interstitial later, e.g. at end of game level
-if(AdMob) AdMob.showInterstitial();
-  
-  
+// // show the interstitial later, e.g. at end of game level
+// if(AdMob) AdMob.showInterstitial();
   
     
 $rootScope.$on('$stateChangeSuccess', function () {
-  // preppare and load ad resource in background, e.g. at begining of game level
-if(AdMob) AdMob.prepareInterstitial( {adId:admobid.interstitial, autoShow:true} );
 
-// show the interstitial later, e.g. at end of game level
-if(AdMob) AdMob.showInterstitial();
+      // console.log('State',$state);
 
     if(typeof analytics !== 'undefined') {
       analytics.debugMode();
@@ -144,7 +154,6 @@ if(AdMob) AdMob.showInterstitial();
       // window.analytics.addCustomDimension('Key', 'Value', success, error);
       
       analytics.trackView($state.current.name);
-      // console.log('State',$state);
       
       // alert('google analytics avalible');  
   } else {
@@ -297,23 +306,23 @@ if(AdMob) AdMob.showInterstitial();
 
 .config(function($stateProvider, $urlRouterProvider,$ionicCloudProvider) {
   
-    //   $ionicCloudProvider.init({
-    //   "core": {
-    //     "app_id": "348f7a38"
-    //   },
-    //  "push": {
-    //   "sender_id": "1011672494804",
-    //   "pluginConfig": {
-    //     "ios": {
-    //       "badge": true,
-    //       "sound": true
-    //     },
-    //     "android": {
-    //       "iconColor": "#343434"
-    //     }
-    //   }
-    // }
-    // });
+      $ionicCloudProvider.init({
+      "core": {
+        "app_id": "348f7a38"
+      },
+     "push": {
+      "sender_id": "1011672494804",
+      "pluginConfig": {
+        "ios": {
+          "badge": true,
+          "sound": true
+        },
+        "android": {
+          "iconColor": "#343434"
+        }
+      }
+    }
+    });
   $stateProvider
    .state('menu', {
     url: '/menu',

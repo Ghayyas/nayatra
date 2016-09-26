@@ -169,15 +169,19 @@ var app = angular.module('netyatra.controllers', [])
    *
   */
   
-.controller('homeCtrl', function (showLoading,httpRequest, alertService, stopLoading, $http, $state,httpAgain,$timeout,$scope) {
+.controller('homeCtrl', function (showLoading,httpRequest, alertService, stopLoading, $http, $state,httpAgain,$timeout,$scope,bannerAd) {
 
     var _self = this;
-    
+        
+    $scope.$on("$ionicView.beforeEnter", function(event, data){
+          console.log('home route works');    
+          bannerAd.hideBanner();
+
+     });
     // handle event
     _self.desibleLoadBtn = false;
     var c;
     var totalCounts;
-    
     // _self.c = 10;
     _self.load = function(){
     // _self.data = [];
@@ -322,10 +326,17 @@ _self.load();
    *
    */
 
-   .controller('categoryDetailCtrl', function ($stateParams, $state, $http,showLoading,alertService,stopLoading,$timeout) {
+   .controller('categoryDetailCtrl', function ($stateParams,$scope,$state, $http,showLoading,alertService,stopLoading,$timeout,bannerAd) {
    
     var _self = this;
     var count;
+    $scope.$on("$ionicView.beforeEnter", function(event, data){
+              console.log('category route works');
+              bannerAd.hideBanner();
+
+     });
+  
+  
     _self.data = JSON.parse($stateParams.category);
     // console.log('categories id',_self.data);
     showLoading.show();
@@ -418,22 +429,47 @@ _self.load();
  *
  */
 
- .controller('postDetailCtrl',function($scope,$stateParams,$rootScope,StorageService,alertService,$cordovaSocialSharing,showLoading,$timeout,stopLoading){
+ .controller('postDetailCtrl',function($scope,$stateParams,$rootScope,StorageService,alertService,$cordovaSocialSharing,showLoading,$timeout,stopLoading,bannerAd,$ionicPlatform,$ionicHistory,$http){
      
       var _self = this;
       var params = $stateParams.postID;
       var jsonParse = JSON.parse(params);
-
+      $ionicPlatform.onHardwareBackButton(function() {
+        console.log('show the inter 1')
+        
+        bannerAd.showInter();
+        bannerAd.hideBanner();
+        $ionicHistory.goBack();
+      });
+      
+      _self.back = function(){
+         console.log('show the inter 1')
+        bannerAd.showInter();
+        bannerAd.hideBanner();
+        $ionicHistory.goBack();
+      }
+      // $ionicPlatform.registerBackButtonAction(function(){
+      //   bannerAd.showInter();
+      //   console.log('show the inter 2')
+      //     // e.preventDefault();
+      //     // return false;
+      // },101)
+      
+      // $ionicPlatform.registerBackButtonAction(function(e){
+      //     //do your stuff
+      //     e.preventDefault();
+      //     return false;
+      //   },101);
       // Enter Page is loaded this events will works
     //  console.log('title',jsonParse.title);
      _self.postTitle = jsonParse.title;
         $scope.$on("$ionicView.beforeEnter", function(event, data){
           showLoading.show();
+           bannerAd.banner();
+
           // handle event
           // console.log('json',jsonParse);
-        $timeout(function(){
-          stopLoading.hide();
-        },2000)
+        
          var getSpecific = StorageService.getAll();
           for(var i = 0; i < getSpecific.length; i++){
               var jsonID = jsonParse.id;
@@ -447,7 +483,10 @@ _self.load();
                 }
         }
       });
-        
+       
+        $timeout(function(){
+           stopLoading.hide();
+        },2000)
         
 
      /**
@@ -483,6 +522,29 @@ _self.load();
       
       _self.fullDetail = jsonParse;
       // console.log('json parse',jsonParse.title);
+
+    // $http.get('http://netyatra.in/api/get_post/?post_id='+jsonParse).then(function(d){
+    //       var jsonStn = d.data.post;
+    //        console.log('data',d,'jsontring',jsonStn);
+    //         _self.content = jsonStn.content;
+    //         _self.fullDetail = jsonStn;
+    //         // $state.go('menu.postDetail',{postID:jsonStn});
+    //         $timeout(function(){
+    //       stopLoading.hide();
+    //     },2000)
+            
+    //       },function(e) {
+    //        $timeout(function(){
+    //         stopLoading.hide();
+    //         },2000)
+            
+    //         // console.log('getting error');
+    //       alertService.showAlert('Error !','Error getting posts')
+ 
+    // })
+
+
+
 
      _self.bookmark = function(d){
 

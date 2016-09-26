@@ -141,3 +141,49 @@ return {
     remove: _remove
   };
 })
+
+/**
+ * 
+ * Ad Banner
+ * 
+ */
+
+netyatraService.service('bannerAd',function(){
+     var admobid = {};
+  if( /(android)/i.test(navigator.userAgent) ) { // for android & amazon-fireos
+    admobid = {
+      banner: 'ca-app-pub-7631554899487555/1555263029', // or DFP format "/6253334/dfp_example_ad"
+      interstitial: 'ca-app-pub-7631554899487555/9166354221'
+    };
+  } else if(/(ipod|iphone|ipad)/i.test(navigator.userAgent)) { // for ios
+    admobid = {
+      banner: 'ca-app-pub-7631554899487555/1555263029', // or DFP format "/6253334/dfp_example_ad"
+      interstitial: 'ca-app-pub-7631554899487555/9166354221'
+    };
+  } else { // for windows phone
+    admobid = {
+      banner: 'ca-app-pub-7631554899487555/1555263029', // or DFP format "/6253334/dfp_example_ad"
+      interstitial: 'ca-app-pub-7631554899487555/9166354221'
+    };
+  }
+  
+  this.banner = function(){
+  
+    if(AdMob) AdMob.createBanner({
+    adId: admobid.banner,
+    position: AdMob.AD_POSITION.BOTTOM_CENTER,
+    autoShow: true });
+}
+
+this.hideBanner = function(){
+  if(AdMob) AdMob.removeBanner();
+}
+  
+  this.showInter = function(){
+      // preppare and load ad resource in background, e.g. at begining of game level
+   if(AdMob) AdMob.prepareInterstitial( {adId:admobid.interstitial, autoShow:true} );
+
+  // show the interstitial later, e.g. at end of game level
+  if(AdMob) AdMob.showInterstitial();
+  }
+})
