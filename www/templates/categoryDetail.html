@@ -27,11 +27,11 @@
 <div class="list card postCard" ng-repeat="cat in categoryDetail.categoryArray">
 
   <div class="item item-body item-black row" ng-click="categoryDetail.gotoCategoryDetail(cat)">
- <div class="card cardwidth">
-    <img ng-src="{{cat.attachments[0].url}}" style="height: 100px;">  
+ <div class="myWidth">
+    <img ng-src="{{cat.attachments[0].url}}" class="img-card">  
     </div>   
      
-    <p class="title" style="margin-left: 24px; margin-top:7px;">
+    <p class="title" style="margin-left: 92px; margin-top:7px;">
       {{cat.title}}
     </p>
     <div class="readFullArticle">

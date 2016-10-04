@@ -7,27 +7,6 @@ var app = angular.module('netyatra.controllers', [])
 
  .controller('AppCtrl', function($scope,$cordovaSocialSharing,$cordovaInAppBrowser,$cordovaGoogleAnalytics) {
   
-  // With the new view caching in Ionic, Controllers are only called
-  // when they are recreated or on app start, instead of every page change.
-  // To listen for when this page is active (for example, to refresh data),
-  // listen for the $ionicView.enter event:
-  //$scope.$on('$ionicView.enter', function(e) {
-  //});
-
-   //Ionic Push
-   
-  //  $ionicPush.register().then(function(t) {
-  //    return $ionicPush.saveToken(t);
-  //    }).then(function(t) {
-  //      console.log('Token saved:', t.token);
-  //    });
-
-
-  //     $scope.$on('cloud:push:notification', function(event, data) {
-  //       var msg = data.message;
-  //       alert(msg.title + ': ' + msg.text);
-  //     });
-   
    /**
     * 
     *  cordovaGoogleAnalytics
@@ -53,6 +32,7 @@ var app = angular.module('netyatra.controllers', [])
    // Rate us Function
    
     $scope.RateUs = function(){
+      // window.open('https://play.google.com/store/apps/details?id=com.deucen.netyatraa');
       
      var options = {
       location: 'no',
@@ -96,8 +76,7 @@ var app = angular.module('netyatra.controllers', [])
 //  Like us on Facebook
     
   $scope.likeUsOnFb = function(){
-   
-
+    // window.open('https://www.facebook.com/netyatra');
     var options = {
       location: 'no',
       clearcache: 'yes',
@@ -117,7 +96,7 @@ var app = angular.module('netyatra.controllers', [])
       });
 
 
-    // $cordovaInAppBrowser.close();
+  //   // $cordovaInAppBrowser.close();
 
   }, false);
 
@@ -137,6 +116,8 @@ var app = angular.module('netyatra.controllers', [])
       hidden: 'no',
       clearsessioncache: 'yes'
     };
+  
+    // window.open('https://play.google.com/store/search?q=pub%3ADeuceN%20Tech&c=apps');
 
   document.addEventListener("deviceready", function () {
     $cordovaInAppBrowser.open('https://play.google.com/store/search?q=pub%3ADeuceN%20Tech&c=apps', '_blank', options)
@@ -618,41 +599,6 @@ _self.load();
 
 
 
-/**  
- *
- * likeCtrl
- *
- */
-
-.controller('likeCtrl', function($scope, $stateParams) {
- })
-
-
-
-  /**
-   *
-   * shareCtrl
-   *
-   */
-
-
-
-.controller('shareCtrl', function ($scope, $stateParams) {
- 
- })
- 
- 
-
- /**
-   *
-   * Rate Controller
-   *
- */
-
-.controller('rateCtrl', function ($scope, $stateParams) {
-  
- })
-
   /**
    *
    * About Controller
@@ -663,7 +609,7 @@ _self.load();
 
         
       
-        var _self = this;
+   var _self = this;
     _self.content = "નેટયાત્રા - ટેકનોલોજી ની આસપાસ સાથે ફરવા નું એક નવું પ્લેટફોર્મ. જ્યાં તમને મળશે મોબાઈલ થી લઈને લેપટોપ/કોમ્પ્યુટર, નોકિયા થી લઈને એન્ડ્રોઈડ, આઈફોન અને ગેજેટ થી લઈને નવી તમામ ટેકનોલોજી વિશેની જાણકારી અને એ પણ આપણી પોતાની ગુજરાતી ભાષા માં. અને કોઈ પણ સબસ્ક્રિપ્શન ચાર્જીસ કે પૈસા ભર્યા વગર. નેટયાત્રા એટલે એક એવો પ્રવાસ કે જ્યાં દરેક નાના મોટા કંઇક નવું જોશે, જાણશે. આજે જયારે ટેકનોલોજી દરેક ક્ષેત્રમાં ઘુસી રહી છે ત્યારે ટેકનોલોજી સાથે કદમ મિલાવી ને આગળ ચાલવું જ ડાહપણ છે. જો આપણે આ ટેકનોલોજી સાથે નહિ ચાલીએ તો ટેકનોલોજી હરણફાળ સાથે આગળ નીકળી જશે અને આપણને એના ગુલામ બનાવી દેશે. મોબાઈલ ની અવનવી ટ્રીક્સ થી લઈને સારા જરૂરી સોફ્ટવેર વિશેની માહિતી, લેપટોપ કોમ્પ્યુટર ને ફાસ્ટ કરવાની ટ્રીક્સ ની સાથે મોબાઈલ ને સિક્યોર કરવાની ટ્રીક્સ, આઈફોન થી સ્કેન કરવાના ફ્રી સોફ્ટવેર ની માહિતી ની સાથે ગુગલ ગ્લાસ ના ફાયદાઓ વિશેની માહિતી, એન્ડ્રોઈડ રૂટ કરવાની રીત થી લઈને કોમ્પ્યુટર ક્લીન કરવાની વિવિધ રીતો સરળ ગુજરાતી ભાષામાં જરૂરી સ્ક્રીન શોટ સાથે વાંચવા માટેનું એક જ સરનામું એટલે નેટયાત્રા તો શું આપ બધા તૈયાર છો નેટયાત્રા ની આ સફર ખેડવા. કોઈ ટીકીટ, વિઝા ની જરૂર નથી. ફક્ત તમારી મરજી અને ધગશ સાથે રાખજો.";
     
       
@@ -671,23 +617,3 @@ _self.load();
 
         
   })      
-        
-        
-   
-   
-    
-
-
-
-
-
-
-  /**
-   *
-   Others Controller
-
-   */
-
- .controller('othersCtrl', function ($scope, $stateParams) {
-
-  })

@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.teamclouders.netyatra" version="0.0.1" xmlns="http://teamclouders.com" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.deucen.netyatraa" version="2.0" xmlns="http://teamclouders.com" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Net Yatra</name>
     <description>
         An Team Clouders Project
@@ -60,5 +60,5 @@
         <variable name="SENDER_ID" value="1011672494804" />
     </plugin>
     <plugin name="cordova-plugin-app-version" spec="~0.1.9" />
-    <!--<plugin name="cordova-plugin-fcm" spec="~1.1.4" />-->
+    <plugin name="cordova-plugin-inappbrowser" spec="~1.5.0" />
 </widget>

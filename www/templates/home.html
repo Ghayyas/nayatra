@@ -3,11 +3,12 @@
       <div class="list card postCard card-title1" ng-repeat="data in home.data track by $index">
 
   <div class="item item-body item-black row" ng-click="home.gotopostDetail(data)">
- <div class="card cardwidth">
-    <img ng-src="{{data.attachments[0].url}}">  
-    </div>   
-     
-    <p class="title" style="margin-left: 24px; margin-top:7px;">
+ <!--<div class="card cardwidth">-->
+    <div class="myWidth">
+    <img ng-src="{{data.attachments[0].url}}" class="img-card">  
+    <!--</div>   -->
+     </div>
+    <p class="title" style="margin-left: 92px; margin-top:7px;">
       {{data.title}}
     </p>
     <div class="readFullArticle">

@@ -93,6 +93,18 @@ ul > li{
 img{
   width: 100%;
 }
+
+.img-card{
+   width: 93px;
+  height: 67px; 
+}
+.myWidth{
+    width: 100px;
+    height: 67px;
+    margin-top: 13px;
+    margin-bottom: 13px;
+    margin-left: 5px;
+}
 .cardwidth{
   width: 200px;
   height: 67px;
