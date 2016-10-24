@@ -59,7 +59,6 @@ netyatraService.service('stopLoading',function($ionicLoading){
 netyatraService.service('httpAgain',function($http,$q){
   var defer = $q.defer();
   this.http = function(c){
-    console.log('service is ',c);
     $http.get('http://netyatra.in/?json=get_recent_posts&count='+ c).then(function(r){
       // console.log('sending posts are ',r);
       defer.resolve(r);

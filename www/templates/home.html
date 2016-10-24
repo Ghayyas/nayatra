@@ -3,12 +3,10 @@
       <div class="list card postCard card-title1" ng-repeat="data in home.data track by $index">
 
   <div class="item item-body item-black row" ng-click="home.gotopostDetail(data)">
- <!--<div class="card cardwidth">-->
     <div class="myWidth">
     <img ng-src="{{data.attachments[0].url}}" class="img-card">  
-    <!--</div>   -->
      </div>
-    <p class="title" style="margin-left: 92px; margin-top:7px;">
+    <p class="title" style="margin-left: 63px; margin-top:7px; font-size: 17px!important;">
       {{data.title}}
     </p>
     <div class="readFullArticle">
@@ -19,8 +17,7 @@
 </div>
 <div class="padding" ng-if="home.data">
     <button class="button button-block button-positive" ng-click="home.loadMore()">Load more</button>
-  <!--<ion-infinite-scroll ng-if="!home.noMoreItemsAvailable"
-       on-infinite="home.loadMoreData()" distance="1%"></ion-infinite-scroll>-->
+
   </div>
   </ion-content>
 </ion-view>
