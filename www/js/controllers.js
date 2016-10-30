@@ -21,18 +21,10 @@ var app = angular.module('netyatra.controllers', [])
     // Rate us Function
 
     $scope.RateUs = function () {
-
-      var options = {
-        location: 'no',
-        clearcache: 'yes',
-        toolbar: 'no',
-        hidden: 'no',
-        clearsessioncache: 'yes'
-      };
-      $timeout(function () {
-        window.open('market://details?id=com.deucen.netyatraa', '_blank', options);
+      
+        window.open('market://details?id=com.deucen.netyatraa', '_system', 'location=yes');
         //$cordovaInAppBrowser.open('https://play.google.com/store/apps/details?id=com.deucen.netyatraa', '_blank', options);
-      }, 300);
+    }
 
 //       AppRate.preferences = {
 //       openStoreInApp: true,
@@ -59,22 +51,14 @@ var app = angular.module('netyatra.controllers', [])
 //     AppRate.promptForRating(true);
 
 
-    };
+    
 
 //  Like us on Facebook
 
     $scope.likeUsOnFb = function () {
-      // window.open('https://www.facebook.com/netyatra');
-      var options = {
-        location: 'no',
-        clearcache: 'yes',
-        toolbar: 'no',
-        hidden: 'no',
-        clearsessioncache: 'yes'
-      };
-      $timeout(function () {
-        window.open('https://www.facebook.com/netyatra', '_blank', options);
-      }, 300)
+ 
+        window.open('https://www.facebook.com/netyatra', '_system', 'location=yes');
+     
 
     };
 
@@ -82,17 +66,8 @@ var app = angular.module('netyatra.controllers', [])
     //Our More Apps
 
     $scope.ourMoreApps = function () {
-      var options = {
-        location: 'no',
-        clearcache: 'yes',
-        toolbar: 'no',
-        hidden: 'no',
-        clearsessioncache: 'yes'
-      };
-
-      $timeout(function () {
-        window.open('market://search?q=pub%3ADeuceN%20Tech&c=apps', '_blank', options);
-      }, 300)
+     
+        window.open('market://search?q=pub%3ADeuceN%20Tech&c=apps', '_system', 'location=yes');
 
     }
 
@@ -107,10 +82,9 @@ var app = angular.module('netyatra.controllers', [])
    *
    */
 
-  .controller('homeCtrl', function (showLoading, httpRequest, alertService, stopLoading, $http, $state, httpAgain, $timeout, $scope, bannerAd) {
+  .controller('homeCtrl', function (showLoading, $localStorage ,httpRequest, alertService, stopLoading, $http, $state, httpAgain, $timeout, $scope, bannerAd) {
 
     var _self = this;
-
     $scope.$on("$ionicView.beforeEnter", function (event, data) {
       console.log('home route works');
       bannerAd.hideBanner();
@@ -126,11 +100,16 @@ var app = angular.module('netyatra.controllers', [])
       c = 10;
       httpRequest.httpFunc().then(function (d) {
         stopLoading.hide();
+        $localStorage.allPost = d.data.posts;
         _self.data = d.data.posts;
         totalCounts = d.data.count_total;
 
       }, function (e) {
         stopLoading.hide();
+       _self.data =  $localStorage.allPost;
+
+       alertService.showAlert('Error', "Make Sure you have working Internet Connections");
+
       })
     };
     _self.load();
@@ -179,17 +158,28 @@ var app = angular.module('netyatra.controllers', [])
     showLoading.show();
     // _self.msg = $rootScope.msg;
     // console.log('rootScope',$rootScope.msg);
-
+     _self.data = $localStorage.categoryData;
+    // console.log('data',_self.data);
     $http.get('http://netyatra.in/api/get_category_index/').then(function (d) {
       $localStorage.categoryData = d.data.categories;
       _self.data = $localStorage.categoryData;
-      // console.log('catDetail',_self.data);
+
+      console.log('data');
       stopLoading.hide();
     }, function (e) {
       stopLoading.hide();
       alertService.showAlert('Error', 'Make sure you have working internet connection');
       // console.log('erro',e)
     });
+    
+    _self.showCategoryDetail = function (id) {
+   
+      var jsonString = JSON.stringify(id);
+       // console.log('works',id);		
+       var jsonString = JSON.stringify(id);		
+     $state.go('menu.categoryDetail',{category:jsonString});		    
+		
+      };		     
   })  
 
     //   //Ye code UNIQUE kar raha hai
@@ -215,6 +205,10 @@ var app = angular.module('netyatra.controllers', [])
     //   stopLoading.hide();
     //   alertService.showAlert('Error!', "Make sure you are connected to internet");
     // });
+    
+    
+    
+    
   /**
    *
    *  Category Detail Ctrl
@@ -312,6 +306,7 @@ var app = angular.module('netyatra.controllers', [])
     var _self = this;
     var params = $stateParams.postID;
     var jsonParse = JSON.parse(params);
+    // console.log('post detail ctrl')
     $ionicPlatform.onHardwareBackButton(function () {
       // console.log('show the inter 1')
 
@@ -328,14 +323,18 @@ var app = angular.module('netyatra.controllers', [])
     };
     _self.postTitle = jsonParse.title;
     $scope.$on("$ionicView.beforeEnter", function (event, data) {
+      // console.log('post detail ctrl')
+     
       showLoading.show();
-      bannerAd.banner();
-
-      $localStorage.postDetailArray = StorageService.getAll();
-      var getSpecific = $localStorage.postDetailArray;
+      // 
+    //  console.log('post works')
+      _self.postDetailArray = StorageService.getAll();
+      var getSpecific = _self.postDetailArray;
+      console.log('getting ',getSpecific)
       for (var i = 0; i < getSpecific.length; i++) {
         var jsonID = jsonParse.id;
         var speci = getSpecific[i].id;
+    console.log('jsonID',jsonID,'speci',speci);
         if (jsonID == speci) {
           _self.bookmarked = true;
 
@@ -344,6 +343,7 @@ var app = angular.module('netyatra.controllers', [])
           _self.bookmarked = false;
         }
       }
+      bannerAd.banner();
     });
 
     $timeout(function () {
@@ -414,9 +414,9 @@ var app = angular.module('netyatra.controllers', [])
 
   .controller('bookmarkCtrl', function ($localStorage, $stateParams, StorageService, $state) {
     var _self = this;
-    _self.data = [];
-    $localStorage.bookmarkArray = StorageService.getAll();
-    _self.data = $localStorage.bookmarkArray;
+    // _self.data = [];
+    // $localStorage.bookmarkArray = StorageService.getAll();
+    _self.data = StorageService.getAll();
 
     _self.gotopostDetail = function (data) {
 

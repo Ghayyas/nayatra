@@ -10,10 +10,7 @@ angular.module('netyatra', ['ionic', 'ionic.cloud', 'netyatra.controllers', 'net
 
 
     $ionicPlatform.ready(function () {
-      document.addEventListener("deviceready", onDeviceReady, false);
-      function onDeviceReady() {
-        window.open = cordova.InAppBrowser.open;
-      }
+      
 
       $ionicPush.register().then(function (t) {
         return $ionicPush.saveToken(t);
@@ -22,7 +19,7 @@ angular.module('netyatra', ['ionic', 'ionic.cloud', 'netyatra.controllers', 'net
 
 
       $rootScope.$on('cloud:push:notification', function (event, data) {
-        console.log('data', data);
+        // console.log('data', data);
         var msg = data.message;
         var payload = data.message.payload.id;
         if (payload !== 'undefined') {
@@ -34,7 +31,7 @@ angular.module('netyatra', ['ionic', 'ionic.cloud', 'netyatra.controllers', 'net
             $state.go('menu.postDetail', {postID: jsonStn});
 
           }, function (e) {
-            console.log('getting error');
+            // console.log('getting error');
           })
         }
       });
