@@ -1,0 +1,23 @@
+<ion-view view-title="BookMarked">
+  <ion-content style="background-color:#b2b2b2;">
+  
+        <ion-content>
+
+         <div class="list card postCard" ng-repeat="data in bookmark.data">
+
+  <div class="item item-body item-black row" ng-click="bookmark.gotopostDetail(data)">
+ <div class="myWidth">
+    <img ng-src="{{data.attachments[0].url}}" class="img-card">
+    </div>   
+    
+    <p class="title" style="margin-left: 63px; margin-top:7px; font-size: 17px!important;">
+      {{data.title}}
+    </p>
+    <div class="readFullArticle">
+    <p style="color:white;float: right;width: 118px;">Read Full Article</p>
+    </div>
+  </div>
+
+</div>
+    </ion-content>
+</ion-view>

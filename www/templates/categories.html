@@ -1,0 +1,19 @@
+
+
+
+
+
+
+<ion-view view-title="Categories">
+    <ion-content style="background-color:#b2b2b2;padding-top: 26px;">
+  
+          <div ng-repeat="cat in category.data">
+          <div class="item noBorder" ng-click="category.showCategoryDetail(cat.id)">
+
+          <p style="color:black; font-size:18px; padding-top: 3px;padding-bottom: 3px;" class="gujarti">{{cat.title}}</p>
+
+         </div>
+         </div>
+
+        </ion-content>
+</ion-view>
