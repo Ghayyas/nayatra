@@ -9,7 +9,7 @@
     </div>   
      
     <p class="title" style="margin-left: 63px; margin-top:7px; font-size: 17px!important;">
-      {{cat.title}}
+      {{cat.title | limitTo:35}} {{cat.title.length > 35 ? '...' : ''}}
     </p>
     <div class="readFullArticle">
     <p style="color:white;float: right;width: 118px;">Read Full Article</p>

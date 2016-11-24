@@ -6,12 +6,39 @@
 angular.module('netyatra', ['ionic', 'ionic.cloud', 'netyatra.controllers', 'netyatraFilter', 'netyatra.Service', 'ngStorage', 'ngCordova'])
 
 
-  .run(function ($ionicPlatform, $ionicPush, $timeout, $cordovaSplashscreen, $state, $rootScope, $http) {
+  .run(function ($ionicPlatform, $ionicPush, $timeout, $cordovaSplashscreen, $state, $rootScope, $http,$localStorage,httpRequest) {
 
 
     $ionicPlatform.ready(function () {
       
+      
+      
+      //Fetch first Time data
+      
+      $http.get('http://netyatra.in/api/core/get_category_posts/?id=' + 4).then(function (d) {
+      
+      $localStorage.categoryDetailTitle = d.data.category.title;
+      $localStorage.categoryDetailArray = d.data.posts;
 
+    }, function (err) {
+    });
+      
+    httpRequest.httpFunc().then(function (d) {
+       
+        $localStorage.allPost = d.data.posts;
+
+
+      }, function (e) {
+
+
+ })  
+      
+      
+      
+      
+      
+      
+      
       $ionicPush.register().then(function (t) {
         return $ionicPush.saveToken(t);
       }).then(function (t) {

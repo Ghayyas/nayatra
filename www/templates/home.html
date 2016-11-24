@@ -7,7 +7,7 @@
     <img ng-src="{{data.attachments[0].url}}" class="img-card">  
      </div>
     <p class="title" style="margin-left: 63px; margin-top:7px; font-size: 17px!important;">
-      {{data.title}}
+      {{data.title| limitTo:35}} {{data.title.length > 35 ? '...' : ''}}
     </p>
     <div class="readFullArticle">
     <p style="color:white;float: right;width: 118px;">Read Full Article</p>

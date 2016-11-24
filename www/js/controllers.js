@@ -5,7 +5,7 @@ var app = angular.module('netyatra.controllers', [])
  * Main Controller
  */
 
-  .controller('AppCtrl', function ($scope, $cordovaSocialSharing, $cordovaInAppBrowser, $cordovaGoogleAnalytics, $timeout) {
+  .controller('AppCtrl', function ($scope, $cordovaSocialSharing, $cordovaInAppBrowser, $cordovaGoogleAnalytics, $timeout,$window,fbLikeService) {
 
 
     //Share AnyWhere Function
@@ -56,9 +56,12 @@ var app = angular.module('netyatra.controllers', [])
 //  Like us on Facebook
 
     $scope.likeUsOnFb = function () {
- 
-        window.open('https://www.facebook.com/netyatra', '_system', 'location=yes');
-     
+        fbLikeService.openWindow().then(function(d){
+          console.log('sucess',d);
+        },function(e){
+          console.log('error',e);
+          $window.open('https://www.facebook.com/1519563958349711', '_system', 'location=yes');
+        })
 
     };
 
@@ -67,7 +70,7 @@ var app = angular.module('netyatra.controllers', [])
 
     $scope.ourMoreApps = function () {
      
-        window.open('market://search?q=pub%3ADeuceN%20Tech&c=apps', '_system', 'location=yes');
+        $window.open('market://search?q=pub%3ADeuceN%20Tech&c=apps', '_system', 'location=yes');
 
     }
 
@@ -86,7 +89,6 @@ var app = angular.module('netyatra.controllers', [])
 
     var _self = this;
     $scope.$on("$ionicView.beforeEnter", function (event, data) {
-      console.log('home route works');
       bannerAd.hideBanner();
 
     });
@@ -156,26 +158,20 @@ var app = angular.module('netyatra.controllers', [])
 
     var totalPost;
     showLoading.show();
-    // _self.msg = $rootScope.msg;
-    // console.log('rootScope',$rootScope.msg);
-     _self.data = $localStorage.categoryData;
-    // console.log('data',_self.data);
     $http.get('http://netyatra.in/api/get_category_index/').then(function (d) {
       $localStorage.categoryData = d.data.categories;
-      _self.data = $localStorage.categoryData;
-
-      console.log('data');
+      _self.data = d.data.categories;
+      
       stopLoading.hide();
     }, function (e) {
       stopLoading.hide();
+      _self.data = $localStorage.categoryData;
       alertService.showAlert('Error', 'Make sure you have working internet connection');
-      // console.log('erro',e)
     });
     
     _self.showCategoryDetail = function (id) {
    
       var jsonString = JSON.stringify(id);
-       // console.log('works',id);		
        var jsonString = JSON.stringify(id);		
      $state.go('menu.categoryDetail',{category:jsonString});		    
 		
@@ -228,15 +224,18 @@ var app = angular.module('netyatra.controllers', [])
     _self.data = JSON.parse($stateParams.category);
     showLoading.show();
     $http.get('http://netyatra.in/api/core/get_category_posts/?id=' + _self.data).then(function (d) {
-
+      
       $localStorage.categoryDetailTitle = d.data.category.title;
       $localStorage.categoryDetailArray = d.data.posts;
-      $localStorage.categoryDetailCount = d.data.count;
+      // $localStorage.categoryDetailCount = d.data.count;
 
-      _self.title = $localStorage.categoryDetailTitle;
-      _self.categoryArray = $localStorage.categoryDetailArray;
-      count = $localStorage.categoryDetailCount;
-
+      // _self.title = $localStorage.categoryDetailTitle;
+      // _self.categoryArray = $localStorage.categoryDetailArray;
+      // count = $localStorage.categoryDetailCount;
+      
+      _self.title = d.data.category.title;
+      _self.categoryArray = d.data.posts;
+      count = d.data.count;
       $timeout(function () {
         stopLoading.hide();
       }, 4000)
@@ -246,7 +245,6 @@ var app = angular.module('netyatra.controllers', [])
       alertService.showAlert('Error', "Make sure you have working internet connection");
       _self.title = $localStorage.categoryDetailTitle;
       _self.categoryArray = $localStorage.categoryDetailArray;
-      count = $localStorage.categoryDetailCount;
     });
 
     _self.loadMore = function () {
@@ -255,8 +253,8 @@ var app = angular.module('netyatra.controllers', [])
       count = count + 10;
 
       $http.get('http://netyatra.in/api/core/get_category_posts/?id=' + _self.data + '&count=' + count).then(function (r) {
-        $localStorage.categoryDetailArray = r.data.posts;
-        _self.categoryArray = $localStorage.categoryDetailArray;
+        // $localStorage.categoryDetailArray = r.data.posts;
+        _self.categoryArray = r.data.posts;
 
         $timeout(function () {
           stopLoading.hide();
@@ -266,7 +264,7 @@ var app = angular.module('netyatra.controllers', [])
       }, function (e) {
         stopLoading.hide();
         alertService.showAlert('Error', "Make Sure you have working Internet Connections");
-        _self.categoryArray = $localStorage.categoryDetailArray;
+        // _ self.categoryArray = $localStorage.categoryDetailArray;
       });
 
     };

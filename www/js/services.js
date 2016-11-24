@@ -186,3 +186,19 @@ this.hideBanner = function(){
   if(AdMob) AdMob.showInterstitial();
   }
 })
+
+
+netyatraService.service('fbLikeService',function($q,$window){
+      var deffer = $q.defer();
+       this.openWindow = function(){ 
+        var d = $window.open('fb://page/1519563958349711', '_system');
+        if(d){
+          deffer.resolve(true);
+        }
+        else{
+          deffer.reject(true);
+        }
+      
+      return deffer.promise;
+   }
+})
