@@ -57,9 +57,9 @@ var app = angular.module('netyatra.controllers', [])
 
     $scope.likeUsOnFb = function () {
         fbLikeService.openWindow().then(function(d){
-          console.log('sucess',d);
+          // console.log('sucess',d);
         },function(e){
-          console.log('error',e);
+          // console.log('error',e);
           $window.open('https://www.facebook.com/1519563958349711', '_system', 'location=yes');
         })
 
@@ -85,7 +85,7 @@ var app = angular.module('netyatra.controllers', [])
    *
    */
 
-  .controller('homeCtrl', function (showLoading, $localStorage ,httpRequest, alertService, stopLoading, $http, $state, httpAgain, $timeout, $scope, bannerAd) {
+  .controller('homeCtrl', function (showLoading, $localStorage,$cordovaSQLite ,httpRequest, alertService, stopLoading, $http, $state, httpAgain, $timeout, $scope, bannerAd) {
 
     var _self = this;
     $scope.$on("$ionicView.beforeEnter", function (event, data) {
@@ -102,15 +102,39 @@ var app = angular.module('netyatra.controllers', [])
       c = 10;
       httpRequest.httpFunc().then(function (d) {
         stopLoading.hide();
-        $localStorage.allPost = d.data.posts;
+        // $localStorage.allPost = d.data.posts;
         _self.data = d.data.posts;
         totalCounts = d.data.count_total;
 
       }, function (e) {
         stopLoading.hide();
-       _self.data =  $localStorage.allPost;
+        alertService.showAlert('Error', "Make Sure you have working Internet Connections");
 
-       alertService.showAlert('Error', "Make Sure you have working Internet Connections");
+      //  _self.data =  $localStorage.allPost;
+      var arr = [];
+        var query = "SELECT * FROM allPosts";
+          $cordovaSQLite.execute(db, query).then(function(res) {
+              if(res.rows.length > 0) {
+              //  / // console.log('allPost',res);
+                 
+                for(var i = 0; i < res.rows.length; i++){
+                // console.log("HOme Ctrl All Post Recivedd " + res.rows.item(i).post + " " , res.rows.item(i));
+                var post = JSON.parse(res.rows.item(i).post);
+                arr.push(post);
+                // console.log('posts',arr);
+                _self.data = arr;
+              } 
+                
+            } else {
+                // console.log("No results found");
+               
+               
+                
+            }
+          },function(e) {
+            // console.log('eerror',e);
+          }) 
+
 
       })
     };
@@ -122,7 +146,7 @@ var app = angular.module('netyatra.controllers', [])
       c = c + 10;
 
       $http.get('http://netyatra.in/?json=get_recent_posts&count=' + c).then(function (r) {
-        console.log('sending posts are ', r);
+        // console.log('sending posts are ', r);.
         stopLoading.hide();
 
         _self.data = r.data.posts;
@@ -152,21 +176,80 @@ var app = angular.module('netyatra.controllers', [])
    *
    */
   
-  .controller('categoryCtrl', function ($localStorage, $http, $stateParams, $cordovaLocalNotification, showLoading, httpRequest, alertService, stopLoading, $state, httpAgain, $scope, $rootScope) {
+  .controller('categoryCtrl', function ($localStorage,$timeout,$ionicPlatform ,$http, $cordovaSQLite ,$stateParams, $cordovaLocalNotification, showLoading, httpRequest, alertService, stopLoading, $state, httpAgain, $scope, $rootScope) {
 
     var _self = this;
 
     var totalPost;
     showLoading.show();
     $http.get('http://netyatra.in/api/get_category_index/').then(function (d) {
-      $localStorage.categoryData = d.data.categories;
+      // $localStorage.categoryData = d.data.categories;
       _self.data = d.data.categories;
+      var data = d.data.categories;
+      
+      $ionicPlatform.ready(function(){
+      var query = "SELECT * FROM allCategories";
+          $cordovaSQLite.execute(db, query).then(function(res) {
+              if(res.rows.length > 0) {
+                // console.log('allPost',res);
+                
+            } else {
+                // console.log("No results found");
+                //  categories (title) VALUES (?)
+              var query2 = "INSERT INTO allCategories (categories) VALUES (?)";
+                $cordovaSQLite.execute(db, query2, [JSON.stringify(data)]).then(function(res) {
+                        console.log(" category id INSERT ID -> " + res.insertId);
+                    }, function (err) {
+                        console.log(err);
+                    });     
+                
+            }
+          },function(e) {
+            console.log('eerror',e);
+          })  
+      })
+       
+      
+      
+      
+      
+      
       
       stopLoading.hide();
     }, function (e) {
       stopLoading.hide();
-      _self.data = $localStorage.categoryData;
-      alertService.showAlert('Error', 'Make sure you have working internet connection');
+       alertService.showAlert('Error', 'Make sure you have working internet connection');     
+     
+      // _self.data = $localStorage.categoryData;
+     
+     $ionicPlatform.ready(function(){
+
+            var query = "SELECT * FROM allCategories";
+            // var arr = [];
+          $cordovaSQLite.execute(db, query).then(function(res) {
+              if(res.rows.length > 0) {
+                // console.log('allPost',res);
+                for(var i = 0; i < res.rows.length; i++){
+                // console.log("Category Detail Ctrl All categories Recivedd " + res.rows.item(i).categories + " " , res.rows.item(i));
+                var post = JSON.parse(res.rows.item(i).categories);
+             
+                _self.data = post;
+              }
+                
+                
+            } else {
+                console.log("No results found");
+                
+                
+            }
+          },function(e) {
+            console.log('eerror',e);
+          }) 
+       
+       
+     });
+
+     
     });
     
     _self.showCategoryDetail = function (id) {
@@ -299,7 +382,7 @@ var app = angular.module('netyatra.controllers', [])
    *
    */
 
-  .controller('postDetailCtrl', function ($scope, $localStorage, $stateParams, $rootScope, StorageService, alertService, $cordovaSocialSharing, showLoading, $timeout, stopLoading, bannerAd, $ionicPlatform, $ionicHistory, $http) {
+  .controller('postDetailCtrl', function ($scope, $localStorage,$cordovaSQLite ,$stateParams, $rootScope, StorageService, alertService, $cordovaSocialSharing, showLoading, $timeout, stopLoading, bannerAd, $ionicPlatform, $ionicHistory, $http) {
 
     var _self = this;
     var params = $stateParams.postID;
@@ -326,21 +409,63 @@ var app = angular.module('netyatra.controllers', [])
       showLoading.show();
       // 
     //  console.log('post works')
-      _self.postDetailArray = StorageService.getAll();
-      var getSpecific = _self.postDetailArray;
-      console.log('getting ',getSpecific)
-      for (var i = 0; i < getSpecific.length; i++) {
-        var jsonID = jsonParse.id;
-        var speci = getSpecific[i].id;
-    console.log('jsonID',jsonID,'speci',speci);
-        if (jsonID == speci) {
-          _self.bookmarked = true;
+    //   _self.postDetailArray = StorageService.getAll();
+    //   var getSpecific = _self.postDetailArray;
+    //   console.log('getting ',getSpecific)
+    //   for (var i = 0; i < getSpecific.length; i++) {
+    //     var jsonID = jsonParse.id;
+    //     var speci = getSpecific[i].id;
+    // console.log('jsonID',jsonID,'speci',speci);
+    //     if (jsonID == speci) {
+    //       _self.bookmarked = true;
 
-        }
-        else {
-          _self.bookmarked = false;
-        }
-      }
+    //     }
+    //     else {
+    //       _self.bookmarked = false;
+    //     }
+    //   }
+     var bookmarkArray = [];
+      var query = "SELECT * FROM bookmark";
+          $cordovaSQLite.execute(db,query).then(function(res){
+            
+            if(res.rows.length > 0) {
+                for(var i = 0; i < res.rows.length; i++){
+                // console.log("Category Detail Ctrl All categories Recivedd " + res.rows.item(i).bookmark + " " , res.rows.item(i));
+                var post = JSON.parse(res.rows.item(i).bookmark);
+                _self.id = JSON.parse(res.rows.item(i).id);
+                bookmarkArray.push(post);
+                // console.log('post',post,'bookmarkArray',bookmarkArray);
+                
+                for(var i = 0; i < bookmarkArray.length; i++){
+                  var jsonID = jsonParse.id;
+                  var speci = bookmarkArray[i].id;
+                  // console.log('jsonID',jsonID);
+                  // console.log('speci',speci);
+                  if(jsonID == speci){
+                    _self.bookmarked = true;
+                  }
+                  else{
+                    _self.bookmarked = false;
+                  }
+                  
+                }
+                
+              }
+                
+            } else {
+                // console.log("No results found");
+                
+            }
+            
+          },function(e){
+            
+          })
+    
+    
+    
+    
+    
+    
       bannerAd.banner();
     });
 
@@ -380,26 +505,51 @@ var app = angular.module('netyatra.controllers', [])
 
     _self.bookmark = function (d) {
 
-      StorageService.add(d).then(function (s) {
 
-        _self.bookmarked = true;
-        alertService.showAlert('Success !', 'successfully Bookmarked');
-      }, function (e) {
-        alertService.showAlert('Error !', 'Error getting Bookmarked')
-      });
+              var query = "INSERT INTO bookmark (bookmark) VALUES (?)";
+                $cordovaSQLite.execute(db, query, [JSON.stringify(d)]).then(function(res) {
+                        // console.log(" category id INSERT ID -> " + res.insertId);
+                     _self.bookmarked = true;
+                  alertService.showAlert('Success !', 'successfully Bookmarked');
+                    }, function (err) {
+                        // console.log(err);.
+                   alertService.showAlert('Error !', 'Error getting Bookmarked')
 
-      var getting = StorageService.getAll();
+              });    
+
+
+      // StorageService.add(d).then(function (s) {
+
+      //   _self.bookmarked = true;
+      //   alertService.showAlert('Success !', 'successfully Bookmarked');
+      // }, function (e) {
+      //   alertService.showAlert('Error !', 'Error getting Bookmarked')
+      // });
+
+      // var getting = StorageService.getAll();
 
 
     };
 
     _self.remove = function (d) {
       _self.bookmarked = false;
-      StorageService.remove(d).then(function (s) {
-        alertService.showAlert('Success !', 'SuccessFully Remove Bookmarked')
-      }, function (e) {
-        alertService.showAlert('Error !', 'Error in removing');
-      });
+      
+      
+      var query = "DELETE FROM bookmark WHERE id = ?;"
+                  $cordovaSQLite.execute(db,query,[d]).then(function(s){
+                    // console.log('successfully Removed',s);
+                 alertService.showAlert('Success !', 'SuccessFully Remove Bookmarked')          
+                  },function(e){
+                    // console.log('getting error while removed',e);
+                    alertService.showAlert('Error !', 'Error in removing');
+                  })
+      
+      
+      // StorageService.remove(d).then(function (s) {
+      //   alertService.showAlert('Success !', 'SuccessFully Remove Bookmarked')
+      // }, function (e) {
+      //   alertService.showAlert('Error !', 'Error in removing');
+      // });
     }
   })
 
@@ -410,11 +560,48 @@ var app = angular.module('netyatra.controllers', [])
    *
    */
 
-  .controller('bookmarkCtrl', function ($localStorage, $stateParams, StorageService, $state) {
+  .controller('bookmarkCtrl', function ($localStorage, $scope ,$cordovaSQLite ,$stateParams, StorageService, $state) {
     var _self = this;
     // _self.data = [];
     // $localStorage.bookmarkArray = StorageService.getAll();
-    _self.data = StorageService.getAll();
+    // _self.data = StorageService.getAll();
+        $scope.$on("$ionicView.beforeEnter", function (event, data) {
+           var bookmarkArray = [];
+         _self.noBookmarked = false;
+
+             var query = "SELECT * FROM bookmark";
+             $cordovaSQLite.execute(db,query).then(function(res){
+            
+            if(res.rows.length > 0) {
+                // console.log('allPost',res);
+                for(var i = 0; i < res.rows.length; i++){
+                // console.log("Category Detail Ctrl All categories Recivedd " + res.rows.item(i).categories + " " , res.rows.item(i));
+                var post = JSON.parse(res.rows.item(i).bookmark);
+                bookmarkArray.push(post);
+                // console.log('post',post,'bookmarkArray',bookmarkArray);
+                _self.data = bookmarkArray;
+                
+              }
+                
+                
+            } else {
+                 _self.data = [];
+                //  console.log("No results found");
+                 _self.noBookmarked = true;
+
+                
+            }
+            
+          },function(e){
+            
+          })
+    });
+   
+    
+    
+    
+    
+    
 
     _self.gotopostDetail = function (data) {
 

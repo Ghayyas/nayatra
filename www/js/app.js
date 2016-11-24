@@ -1,37 +1,238 @@
-
 //Netyatra Application
 //By Ghayyas Mubashir
 //Date: 24/9/16
 
+var db = null;
+
 angular.module('netyatra', ['ionic', 'ionic.cloud', 'netyatra.controllers', 'netyatraFilter', 'netyatra.Service', 'ngStorage', 'ngCordova'])
 
 
-  .run(function ($ionicPlatform, $ionicPush, $timeout, $cordovaSplashscreen, $state, $rootScope, $http,$localStorage,httpRequest) {
+  .run(function ($ionicPlatform, $ionicPush, $timeout, $cordovaSplashscreen, $state, $rootScope, $http,$localStorage,httpRequest,$cordovaSQLite) {
 
 
     $ionicPlatform.ready(function () {
-      
-      
-      
+     
+    db = $cordovaSQLite.openDB({ name: "netyatra.db", location: 'default' });
+    $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS categories (id integer primary key, title text)");
+    $cordovaSQLite.execute(db,"CREATE TABLE IF NOT EXISTS posts (id integer primary key, post text)");
+    $cordovaSQLite.execute(db,"CREATE TABLE IF NOT EXISTS allPosts (id integer primary key, post key)");
+    $cordovaSQLite.execute(db,"CREATE TABLE IF NOT EXISTS allCategories (id integer primary key,categories text)")
+    $cordovaSQLite.execute(db,"CREATE TABLE IF NOT EXISTS bookmark (id integer primary key,bookmark text)")
+
+
+
+ 
+ 
+
+
+
+
       //Fetch first Time data
+      
+      
+      
+      
       
       $http.get('http://netyatra.in/api/core/get_category_posts/?id=' + 4).then(function (d) {
       
-      $localStorage.categoryDetailTitle = d.data.category.title;
-      $localStorage.categoryDetailArray = d.data.posts;
+      
+      // $localStorage.categoryDetailTitle = d.data.category.title;
+      // $localStorage.categoryDetailArray = d.data.posts;
+ 
+     var query = "DELETE FROM posts";
+        $cordovaSQLite.execute(db, query);
+      var query2 = "DELETE FROM allPosts";
+      $cordovaSQLite.execute(db,query2);
+    //  var query = "DELETE FROM categories";
+    //     $cordovaSQLite.execute(db, query);
+        
+      var query = "SELECT * FROM categories";
+          $cordovaSQLite.execute(db, query).then(function(res) {
+              if(res.rows.length > 0) {
+                
+            } else {
+                // console.log("No results found");
+                
+            var title = d.data.category.title;
+            var query = "INSERT INTO categories (title) VALUES (?)";
+             $cordovaSQLite.execute(db, query, [title]).then(function(res) {
+            // console.log("INSERT ID -> " + res.insertId);
+        }, function (err) {
+            // console.error(err);
+        });
+            }
+        }, function (err) {
+            // console.error(err);
+        });
+      
+      
+        var query = "SELECT * FROM posts";
+          $cordovaSQLite.execute(db, query).then(function(res) {
+              if(res.rows.length > 0) {
+                
+            } else {
+                // console.log("No results found");
+                
+            var posts = d.data.posts;
+  
+            var query = "INSERT INTO posts (post) VALUES (?)";
+            for(var i=0; i < posts.length; i++){
+            // console.log('posts',posts[i]);
+             $cordovaSQLite.execute(db, query, [JSON.stringify(posts[i])]).then(function(res) {
+               
+            //  console.log(" post INSERT ID -> " , res);
+           
+        }, function (err) {
+            // console.error(err);
+        }); 
+            }
+             
+            }
+        }, function (err) {
+            console.error(err);
+        });
+          
+        // }, function (err) {
+        //     console.error(err);
+        // });
+    
+ 
+ 
+ 
+      
+    
+    
+      var query = "SELECT * FROM categories";
+          $cordovaSQLite.execute(db, query).then(function(res) {
+              if(res.rows.length > 0) {
+              // console.log('rows',res);
+              for(var i = 0; i < res.rows.length; i++){
+                // console.log("categories -> " + res.rows.item(i).title + " " , res.rows.item(i));
+                
+              }
+            } else {
+                // console.log("No results found");
+            }
+        }, function (err) {
+            // console.error(err);
+        });
 
-    }, function (err) {
-    });
+
+    
       
     httpRequest.httpFunc().then(function (d) {
        
-        $localStorage.allPost = d.data.posts;
+        // $localStorage.allPost = d.data.posts;
+        var allPost = d.data.posts;
+        
+        
+        
+        
+        var query = "SELECT * FROM allPosts";
+          $cordovaSQLite.execute(db, query).then(function(res) {
+              if(res.rows.length > 0) {
+                
+            } else {
+                // console.log("No results found");
+                
+  
+            var query = "INSERT INTO allPosts (post) VALUES (?)";
+            for(var i=0; i < allPost.length; i++){
+            // console.log('posts',posts[i]);
+             $cordovaSQLite.execute(db, query, [JSON.stringify(allPost[i])]).then(function(res) {
+               
+            //  console.log("All post INSERT ID -> " , res);
+           
+        }, function (err) {
+            // console.error(err);
+        }); 
+            }
+             
+            }
+        }, function (err) {
+            // console.error(err);
+        });
+        
+        
+       }, function (e) {
 
 
-      }, function (e) {
-
-
- })  
+     })
+   }, function (e) {
+     
+     
+     
+     /**     All Post       */
+     
+     
+    //     var query = "SELECT * FROM allPosts";
+    //       $cordovaSQLite.execute(db, query).then(function(res) {
+    //           if(res.rows.length > 0) {
+    //             console.log('allPost',res);
+                
+    //             for(var i = 0; i < res.rows.length; i++){
+    //             console.log("All Post Recivedd " + res.rows.item(i).post + " " , res.rows.item(i));
+                
+    //           }
+                
+                
+    //         } else {
+    //             console.log("No results found");
+                
+                
+    //         }
+    //       },function(e) {
+    //         console.log('eerror',e);
+    //       }) 
+        
+        
+     
+     
+     
+     
+     
+     
+     
+     
+     /***   Category  *** */
+     
+     
+     
+    //  var query = "SELECT * FROM categories";
+    //       $cordovaSQLite.execute(db, query).then(function(res) {
+    //           if(res.rows.length > 0) {
+    //           console.log('rows',res);
+    //           for(var i = 0; i < res.rows.length; i++){
+    //             console.log("SELECTED -> " + res.rows.item(i).title + " " , res.rows.item(i));
+                
+    //           }
+    //         } else {
+    //             console.log("No results found");
+    //         }
+    //     }, function (err) {
+    //         console.error(err);
+    //     });
+        
+        
+        /**Posts */
+        
+        
+    //     var query = "SELECT * FROM posts";
+    //       $cordovaSQLite.execute(db, query).then(function(res) {
+    //           if(res.rows.length > 0) {
+    //           console.log('rows',res);
+    //           for(var i = 0; i < res.rows.length; i++){
+    //             console.log("SELECTED -> " + res.rows.item(i).post + " " , res.rows.item(i));
+                
+    //           }
+    //         } else {
+    //             console.log("No results found");
+    //         }
+    //     }, function (err) {
+    //         console.error(err);
+    //     });
+     
+   });  
       
       
       
@@ -53,7 +254,7 @@ angular.module('netyatra', ['ionic', 'ionic.cloud', 'netyatra.controllers', 'net
           console.log('payload is not undefined')
           $http.get('http://netyatra.in/api/get_post/?post_id=' + payload).then(function (d) {
             var jsonStn = JSON.stringify(d.data.post);
-            console.log('data', d, 'jsontring', jsonStn);
+            // console.log('data', d, 'jsontring', jsonStn);
 
             $state.go('menu.postDetail', {postID: jsonStn});
 
@@ -102,8 +303,8 @@ angular.module('netyatra', ['ionic', 'ionic.cloud', 'netyatra.controllers', 'net
     });
     //Ionic Push
 
-
-  })
+    })
+ 
 
   .config(function ($stateProvider, $urlRouterProvider, $ionicCloudProvider) {
     $ionicCloudProvider.init({
