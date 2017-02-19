@@ -5,10 +5,11 @@
 
   <div class="item item-body item-black row" ng-click="categoryDetail.gotoCategoryDetail(cat)">
  <div class="myWidth">
-    <img ng-src="{{cat.attachments[0].url}}" class="img-card">  
+    <img ng-src="{{cat.thumbnail_images.medium_large.url || 'img/noImage.svg'}}" class="img-card">  
     </div>   
+    <!--margin-top:7px; font-size: 17px!important;-->
      
-    <p class="title" style="margin-left: 63px; margin-top:7px; font-size: 17px!important;">
+    <p class="title" style="margin-left: 14px; padding-bottom:12px; width:100%;">
       {{cat.title | limitTo:35}} {{cat.title.length > 35 ? '...' : ''}}
     </p>
     <div class="readFullArticle">

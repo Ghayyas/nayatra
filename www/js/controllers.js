@@ -9,11 +9,11 @@ var app = angular.module('netyatra.controllers', [])
 
 
     //Share AnyWhere Function
-    var shareTitle = 'મોબાઈલ, કોમ્પ્યુટર, લેપટોપ ની ફોટા સાથે ની મદદ આપતી અને ઈન્ટરનેટ જગત ની તમામ માહિતી આપતી એક માત્ર ગુજરાતી એપ્લીકેશન એટલે Netયાત્રા. તદન મફત, કોઈ પણ ચાર્જ વગર આજે જ ડાઉનલોડ કરો';
+    var shareTitle = sharingTitle;
     $scope.shareAnywhere = function () {
 
       $timeout(function () {
-        $cordovaSocialSharing.share(shareTitle, null, null, "http://bit.ly/1WQ5sDG");
+        $cordovaSocialSharing.share(shareTitle, null, null, short_sharing_link);
       }, 300);
 
     };
@@ -21,8 +21,13 @@ var app = angular.module('netyatra.controllers', [])
     // Rate us Function
 
     $scope.RateUs = function () {
-      
-        window.open('market://details?id=com.deucen.netyatraa', '_system', 'location=yes');
+      if(ionicPlatform == 'android'){
+         window.open('market://details?id='+play_id, '_system', 'location=yes');
+      }
+      else{
+        window.open(apple_id, '_system', 'location=yes');
+      }
+        
         //$cordovaInAppBrowser.open('https://play.google.com/store/apps/details?id=com.deucen.netyatraa', '_blank', options);
     }
 
@@ -57,10 +62,8 @@ var app = angular.module('netyatra.controllers', [])
 
     $scope.likeUsOnFb = function () {
         fbLikeService.openWindow().then(function(d){
-          // console.log('sucess',d);
         },function(e){
-          // console.log('error',e);
-          $window.open('https://www.facebook.com/1519563958349711', '_system', 'location=yes');
+          $window.open(fb_page, '_system', 'location=yes');
         })
 
     };
@@ -69,9 +72,12 @@ var app = angular.module('netyatra.controllers', [])
     //Our More Apps
 
     $scope.ourMoreApps = function () {
-     
-        $window.open('market://search?q=pub%3ADeuceN%20Tech&c=apps', '_system', 'location=yes');
-
+       if(ionicPlatform == 'android'){
+           $window.open(more_apps_links, '_system', 'location=yes');
+       }
+       else{
+         $window.open(more_apps_links_ios,'_system','location=yes');
+       }
     }
 
 
@@ -85,13 +91,14 @@ var app = angular.module('netyatra.controllers', [])
    *
    */
 
-  .controller('homeCtrl', function (showLoading, $localStorage,$cordovaSQLite ,httpRequest, alertService, stopLoading, $http, $state, httpAgain, $timeout, $scope, bannerAd) {
+  .controller('homeCtrl', function (showLoading, $localStorage,$cordovaSQLite ,httpRequest, alertService, stopLoading, $http, $state, $timeout, $scope, bannerAd) {
 
     var _self = this;
     $scope.$on("$ionicView.beforeEnter", function (event, data) {
-      bannerAd.hideBanner();
-
-    });
+      if(typeof(AdMob) !== 'undefined'){
+         bannerAd.hideBanner()
+      }
+});
     // handle event
     _self.desibleLoadBtn = false;
     var c;
@@ -104,6 +111,7 @@ var app = angular.module('netyatra.controllers', [])
         stopLoading.hide();
         // $localStorage.allPost = d.data.posts;
         _self.data = d.data.posts;
+        // console.log('data',_self.data);
         totalCounts = d.data.count_total;
 
       }, function (e) {
@@ -115,24 +123,17 @@ var app = angular.module('netyatra.controllers', [])
         var query = "SELECT * FROM allPosts";
           $cordovaSQLite.execute(db, query).then(function(res) {
               if(res.rows.length > 0) {
-              //  / // console.log('allPost',res);
-                 
+           
                 for(var i = 0; i < res.rows.length; i++){
-                // console.log("HOme Ctrl All Post Recivedd " + res.rows.item(i).post + " " , res.rows.item(i));
                 var post = JSON.parse(res.rows.item(i).post);
                 arr.push(post);
-                // console.log('posts',arr);
                 _self.data = arr;
               } 
                 
             } else {
-                // console.log("No results found");
-               
-               
                 
             }
           },function(e) {
-            // console.log('eerror',e);
           }) 
 
 
@@ -141,31 +142,30 @@ var app = angular.module('netyatra.controllers', [])
     _self.load();
 
     _self.loadMore = function () {
-
-      showLoading.show();
-      c = c + 10;
-
-      $http.get('http://netyatra.in/?json=get_recent_posts&count=' + c).then(function (r) {
-        // console.log('sending posts are ', r);.
+     c = c + 10;
+      if(_self.data.length == totalCounts){
+         alertService.showAlert('Sorry', "Sorry No More Stories Found");
+      }
+      else{
+     showLoading.show();
+     $http.get(WordPress_url +'/?json=get_recent_posts&count=' + c).then(function (r) {
         stopLoading.hide();
-
-        _self.data = r.data.posts;
-        if (r.data.count == totalCounts) {
-          alertService.showAlert('Sorry', "Sorry no more data is avalible");
-        }
+       _self.data = r.data.posts;
       }, function (e) {
         stopLoading.hide();
         alertService.showAlert('Error', "Make Sure you have working Internet Connections");
       });
-
-    };
-
-
-    _self.gotopostDetail = function (data) {
+    }};
+   
+   _self.gotopostDetail = function (data) {
 
       var jsonString = JSON.stringify(data);
 
       $state.go('menu.postDetail', {postID: jsonString});
+    }
+    
+    _self.gotoSearch = function(){
+      $state.go('menu.search');
     }
   })
 
@@ -176,36 +176,29 @@ var app = angular.module('netyatra.controllers', [])
    *
    */
   
-  .controller('categoryCtrl', function ($localStorage,$timeout,$ionicPlatform ,$http, $cordovaSQLite ,$stateParams, $cordovaLocalNotification, showLoading, httpRequest, alertService, stopLoading, $state, httpAgain, $scope, $rootScope) {
+  .controller('categoryCtrl', function ($localStorage,$timeout,$ionicPlatform ,$http, $cordovaSQLite ,$stateParams, $cordovaLocalNotification, showLoading, httpRequest, alertService, stopLoading, $state, $scope, $rootScope) {
 
     var _self = this;
 
     var totalPost;
     showLoading.show();
-    $http.get('http://netyatra.in/api/get_category_index/').then(function (d) {
-      // $localStorage.categoryData = d.data.categories;
+    $http.get(WordPress_url +'/?json=get_category_index').then(function (d) {
       _self.data = d.data.categories;
       var data = d.data.categories;
-      
+           stopLoading.hide();
       $ionicPlatform.ready(function(){
       var query = "SELECT * FROM allCategories";
           $cordovaSQLite.execute(db, query).then(function(res) {
               if(res.rows.length > 0) {
-                // console.log('allPost',res);
-                
+
             } else {
-                // console.log("No results found");
-                //  categories (title) VALUES (?)
               var query2 = "INSERT INTO allCategories (categories) VALUES (?)";
                 $cordovaSQLite.execute(db, query2, [JSON.stringify(data)]).then(function(res) {
-                        console.log(" category id INSERT ID -> " + res.insertId);
                     }, function (err) {
-                        console.log(err);
                     });     
                 
             }
           },function(e) {
-            console.log('eerror',e);
           })  
       })
        
@@ -228,9 +221,7 @@ var app = angular.module('netyatra.controllers', [])
             // var arr = [];
           $cordovaSQLite.execute(db, query).then(function(res) {
               if(res.rows.length > 0) {
-                // console.log('allPost',res);
                 for(var i = 0; i < res.rows.length; i++){
-                // console.log("Category Detail Ctrl All categories Recivedd " + res.rows.item(i).categories + " " , res.rows.item(i));
                 var post = JSON.parse(res.rows.item(i).categories);
              
                 _self.data = post;
@@ -238,12 +229,8 @@ var app = angular.module('netyatra.controllers', [])
                 
                 
             } else {
-                console.log("No results found");
-                
-                
             }
           },function(e) {
-            console.log('eerror',e);
           }) 
        
        
@@ -252,11 +239,10 @@ var app = angular.module('netyatra.controllers', [])
      
     });
     
-    _self.showCategoryDetail = function (id) {
+    _self.showCategoryDetail = function (id,title) {
    
-      var jsonString = JSON.stringify(id);
-       var jsonString = JSON.stringify(id);		
-     $state.go('menu.categoryDetail',{category:jsonString});		    
+      var jsonString = JSON.stringify(title);
+     $state.go('menu.categoryDetail',{category:id,title:title});		    
 		
       };		     
   })  
@@ -299,25 +285,35 @@ var app = angular.module('netyatra.controllers', [])
     var _self = this;
     var count;
     $scope.$on("$ionicView.beforeEnter", function (event, data) {
-      bannerAd.hideBanner();
+     if(typeof(AdMob) !== 'undefined'){
+        bannerAd.hideBanner();
+     }
 
     });
 
 
     _self.data = JSON.parse($stateParams.category);
+    _self.title = $stateParams.title;
     showLoading.show();
-    $http.get('http://netyatra.in/api/core/get_category_posts/?id=' + _self.data).then(function (d) {
-      
-      $localStorage.categoryDetailTitle = d.data.category.title;
+    $http.get(WordPress_url +'/?json=get_category_posts&id=' + _self.data).then(function (d) {
+      //  console.log('_self.data',d);
+      // $localStorage.categoryDetailTitle = d.data.data.varta_lists;
       $localStorage.categoryDetailArray = d.data.posts;
       // $localStorage.categoryDetailCount = d.data.count;
 
       // _self.title = $localStorage.categoryDetailTitle;
       // _self.categoryArray = $localStorage.categoryDetailArray;
       // count = $localStorage.categoryDetailCount;
-      
-      _self.title = d.data.category.title;
-      _self.categoryArray = d.data.posts;
+
+      // _self.title = d.data.data.varta_lists;
+      _self.categoryArray = $localStorage.categoryDetailArray;
+     
+       stopLoading.hide();
+
+
+
+
+     
       count = d.data.count;
       $timeout(function () {
         stopLoading.hide();
@@ -326,7 +322,7 @@ var app = angular.module('netyatra.controllers', [])
     }, function (err) {
       stopLoading.hide();
       alertService.showAlert('Error', "Make sure you have working internet connection");
-      _self.title = $localStorage.categoryDetailTitle;
+      // _self.title = $localStorage.categoryDetailTitle;
       _self.categoryArray = $localStorage.categoryDetailArray;
     });
 
@@ -335,7 +331,7 @@ var app = angular.module('netyatra.controllers', [])
       showLoading.show();
       count = count + 10;
 
-      $http.get('http://netyatra.in/api/core/get_category_posts/?id=' + _self.data + '&count=' + count).then(function (r) {
+      $http.get(WordPress_url +'/?json=get_category_posts&id=' + _self.data + '&count=' + count).then(function (r) {
         // $localStorage.categoryDetailArray = r.data.posts;
         _self.categoryArray = r.data.posts;
 
@@ -387,26 +383,26 @@ var app = angular.module('netyatra.controllers', [])
     var _self = this;
     var params = $stateParams.postID;
     var jsonParse = JSON.parse(params);
-    // console.log('post detail ctrl')
     $ionicPlatform.onHardwareBackButton(function () {
-      // console.log('show the inter 1')
-
+     if(typeof(AdMob)!=='undefined'){
       bannerAd.showInter();
       bannerAd.hideBanner();
-      $ionicHistory.goBack();
+      $ionicHistory.goBack(); 
+     }
     });
-
-    _self.back = function () {
-      //  console.log('show the inter 1')
+   _self.back = function () {
+    if(typeof(AdMob)!=='undefined'){
       bannerAd.showInter();
       bannerAd.hideBanner();
-      $ionicHistory.goBack();
+      $ionicHistory.goBack(); 
+     }
     };
     _self.postTitle = jsonParse.title;
     $scope.$on("$ionicView.beforeEnter", function (event, data) {
-      // console.log('post detail ctrl')
-     
       showLoading.show();
+      if(typeof(AdMob)!=='undefined'){
+            bannerAd.banner();
+        }
       // 
     //  console.log('post works')
     //   _self.postDetailArray = StorageService.getAll();
@@ -426,21 +422,18 @@ var app = angular.module('netyatra.controllers', [])
     //   }
      var bookmarkArray = [];
       var query = "SELECT * FROM bookmark";
-          $cordovaSQLite.execute(db,query).then(function(res){
+        $cordovaSQLite.execute(db,query).then(function(res){
+
             
             if(res.rows.length > 0) {
                 for(var i = 0; i < res.rows.length; i++){
-                // console.log("Category Detail Ctrl All categories Recivedd " + res.rows.item(i).bookmark + " " , res.rows.item(i));
                 var post = JSON.parse(res.rows.item(i).bookmark);
                 _self.id = JSON.parse(res.rows.item(i).id);
                 bookmarkArray.push(post);
-                // console.log('post',post,'bookmarkArray',bookmarkArray);
                 
                 for(var i = 0; i < bookmarkArray.length; i++){
                   var jsonID = jsonParse.id;
                   var speci = bookmarkArray[i].id;
-                  // console.log('jsonID',jsonID);
-                  // console.log('speci',speci);
                   if(jsonID == speci){
                     _self.bookmarked = true;
                   }
@@ -453,21 +446,13 @@ var app = angular.module('netyatra.controllers', [])
               }
                 
             } else {
-                // console.log("No results found");
                 
             }
             
           },function(e){
             
           })
-    
-    
-    
-    
-    
-    
-      bannerAd.banner();
-    });
+  });
 
     $timeout(function () {
       stopLoading.hide();
@@ -480,20 +465,33 @@ var app = angular.module('netyatra.controllers', [])
      */
 
 
-    _self.shareFb = function (msg) {
-      var output = msg.replace(/(<([^>]+)>)/ig, "");
+    _self.shareFb = function () {
+      $timeout(function(){
+      $cordovaSocialSharing.shareViaFacebook(jsonParse.title +" - " + sharingTitle, null, short_sharing_link)
+      .then(function(){
 
-      $cordovaSocialSharing.shareViaFacebook(jsonParse.title, null, "http://bit.ly/1WQ5sDG")
-        .then(function (s) {
-        }, function (e) {
-        });
+      },function(e){
+        window.alert('Make Sure Facebook app is installed Or Enabled.');
+      })
+    },300)
+     
     };
 
-    _self.shareAnyWhere = function (d) {
+    _self.shareAnyWhere = function () {
       setTimeout(function () {
-        $cordovaSocialSharing.share(jsonParse.title, null, null, "http://bit.ly/1WQ5sDG");
+        $cordovaSocialSharing.share(jsonParse.title + "-" + sharingTitle, null, null, short_sharing_link);
       }, 300);
     };
+    _self.shareWhatsApp = function(){
+      setTimeout(function(){
+      $cordovaSocialSharing.shareViaWhatsApp(jsonParse.title + "- " + sharingTitle, null, short_sharing_link)
+      .then(function(s){
+      },function(e){
+        window.alert('Make Sure Whatsapp is installed Or Enabled.');
+      })
+      },300);
+      
+    }
 
 
     var ps = JSON.stringify(jsonParse.content);
@@ -504,15 +502,12 @@ var app = angular.module('netyatra.controllers', [])
 
 
     _self.bookmark = function (d) {
-
-
+             
               var query = "INSERT INTO bookmark (bookmark) VALUES (?)";
                 $cordovaSQLite.execute(db, query, [JSON.stringify(d)]).then(function(res) {
-                        // console.log(" category id INSERT ID -> " + res.insertId);
                      _self.bookmarked = true;
                   alertService.showAlert('Success !', 'successfully Bookmarked');
                     }, function (err) {
-                        // console.log(err);.
                    alertService.showAlert('Error !', 'Error getting Bookmarked')
 
               });    
@@ -537,10 +532,8 @@ var app = angular.module('netyatra.controllers', [])
       
       var query = "DELETE FROM bookmark WHERE id = ?;"
                   $cordovaSQLite.execute(db,query,[d]).then(function(s){
-                    // console.log('successfully Removed',s);
                  alertService.showAlert('Success !', 'SuccessFully Remove Bookmarked')          
                   },function(e){
-                    // console.log('getting error while removed',e);
                     alertService.showAlert('Error !', 'Error in removing');
                   })
       
@@ -573,12 +566,9 @@ var app = angular.module('netyatra.controllers', [])
              $cordovaSQLite.execute(db,query).then(function(res){
             
             if(res.rows.length > 0) {
-                // console.log('allPost',res);
                 for(var i = 0; i < res.rows.length; i++){
-                // console.log("Category Detail Ctrl All categories Recivedd " + res.rows.item(i).categories + " " , res.rows.item(i));
                 var post = JSON.parse(res.rows.item(i).bookmark);
                 bookmarkArray.push(post);
-                // console.log('post',post,'bookmarkArray',bookmarkArray);
                 _self.data = bookmarkArray;
                 
               }
@@ -586,7 +576,6 @@ var app = angular.module('netyatra.controllers', [])
                 
             } else {
                  _self.data = [];
-                //  console.log("No results found");
                  _self.noBookmarked = true;
 
                 
@@ -597,14 +586,7 @@ var app = angular.module('netyatra.controllers', [])
           })
     });
    
-    
-    
-    
-    
-    
-
     _self.gotopostDetail = function (data) {
-
       var jsonString = JSON.stringify(data);
       $state.go('menu.postDetail', {postID: jsonString});
     }
@@ -625,8 +607,65 @@ var app = angular.module('netyatra.controllers', [])
 
 
     var _self = this;
-    _self.content = "નેટયાત્રા - ટેકનોલોજી ની આસપાસ સાથે ફરવા નું એક નવું પ્લેટફોર્મ. જ્યાં તમને મળશે મોબાઈલ થી લઈને લેપટોપ/કોમ્પ્યુટર, નોકિયા થી લઈને એન્ડ્રોઈડ, આઈફોન અને ગેજેટ થી લઈને નવી તમામ ટેકનોલોજી વિશેની જાણકારી અને એ પણ આપણી પોતાની ગુજરાતી ભાષા માં. અને કોઈ પણ સબસ્ક્રિપ્શન ચાર્જીસ કે પૈસા ભર્યા વગર. નેટયાત્રા એટલે એક એવો પ્રવાસ કે જ્યાં દરેક નાના મોટા કંઇક નવું જોશે, જાણશે. આજે જયારે ટેકનોલોજી દરેક ક્ષેત્રમાં ઘુસી રહી છે ત્યારે ટેકનોલોજી સાથે કદમ મિલાવી ને આગળ ચાલવું જ ડાહપણ છે. જો આપણે આ ટેકનોલોજી સાથે નહિ ચાલીએ તો ટેકનોલોજી હરણફાળ સાથે આગળ નીકળી જશે અને આપણને એના ગુલામ બનાવી દેશે. મોબાઈલ ની અવનવી ટ્રીક્સ થી લઈને સારા જરૂરી સોફ્ટવેર વિશેની માહિતી, લેપટોપ કોમ્પ્યુટર ને ફાસ્ટ કરવાની ટ્રીક્સ ની સાથે મોબાઈલ ને સિક્યોર કરવાની ટ્રીક્સ, આઈફોન થી સ્કેન કરવાના ફ્રી સોફ્ટવેર ની માહિતી ની સાથે ગુગલ ગ્લાસ ના ફાયદાઓ વિશેની માહિતી, એન્ડ્રોઈડ રૂટ કરવાની રીત થી લઈને કોમ્પ્યુટર ક્લીન કરવાની વિવિધ રીતો સરળ ગુજરાતી ભાષામાં જરૂરી સ્ક્રીન શોટ સાથે વાંચવા માટેનું એક જ સરનામું એટલે નેટયાત્રા તો શું આપ બધા તૈયાર છો નેટયાત્રા ની આ સફર ખેડવા. કોઈ ટીકીટ, વિઝા ની જરૂર નથી. ફક્ત તમારી મરજી અને ધગશ સાથે રાખજો.";
-
-
-  })
+    _self.content = about_Content
+ })
   
+  
+ /**
+  * Search Controller 
+  *
+  **/ 
+
+.controller('searchCtrl',function($http,$scope,$ionicLoading,$timeout,alertService,$state){
+ 
+   var _self = this;
+   var count = 10;
+   var query;
+   $scope.search = {};
+   _self.showLoadBtn = false;
+   
+   $scope.$watch('search.keyword',function(old,newVal) {
+   if($scope.search.keyword !== ''){
+  
+   _self.spinner = true;
+   query = old;
+     fetch(old);
+   }
+   else{
+     _self.data  = [];
+     _self.showLoadBtn = false;
+   }
+   },true);
+   
+   
+   function fetch(query) {
+     
+     $http.get(WordPress_url+ '?json=get_search_results&search='+query).then(function(s){
+    
+       _self.data = s.data.posts;
+       _self.showLoadBtn = true;
+    _self.spinner = false;
+     },function(e){
+      _self.spinner = false;
+      alertService.showAlert('Error !', 'Make Sure you have working Internet Connection');
+
+     })
+   }
+   
+   _self.loadMore = function(){
+      
+     var countMore = count+ count;
+     $http.get(WordPress_url+ '?json=get_search_results&search='+query+"&count="+countMore).then(function(s){
+       _self.data = s.data.posts;
+       _self.showLoadBtn = true;
+     $ionicLoading.hide();
+     },function(e){
+       $ionicLoading.hide();
+      alertService.showAlert('Error !', 'Make Sure you have working Internet Connection');
+    });
+   }
+   _self.gotopostDetail = function(d){
+     var jsonString = JSON.stringify(d);
+     $state.go('menu.postDetail', {postID: jsonString});
+    }
+});
