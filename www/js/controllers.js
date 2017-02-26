@@ -5,7 +5,7 @@ var app = angular.module('netyatra.controllers', [])
  * Main Controller
  */
 
-  .controller('AppCtrl', function ($scope, $cordovaSocialSharing, $cordovaInAppBrowser, $cordovaGoogleAnalytics, $timeout,$window,fbLikeService) {
+  .controller('AppCtrl', function ($scope, $cordovaSocialSharing, $cordovaInAppBrowser,$cordovaAppAvailability, $cordovaGoogleAnalytics, $timeout,$window,fbLikeService) {
 
 
     //Share AnyWhere Function
@@ -61,11 +61,30 @@ var app = angular.module('netyatra.controllers', [])
 //  Like us on Facebook
 
     $scope.likeUsOnFb = function () {
-        fbLikeService.openWindow().then(function(d){
-        },function(e){
-          $window.open(fb_page, '_system', 'location=yes');
-        })
+            var scheme;
+       // Don't forget to add the cordova-plugin-device plugin for `device.platform`
+          if(device.platform === 'iOS') {
+              scheme = 'fb://';
+          }
+          else if(device.platform === 'Android') {
+              scheme = 'com.facebook.katana';
+          }
 
+          appAvailability.check(
+              scheme,       // URI Scheme or Package Name
+              function() {  // Success callback
+                if(device.platform === 'iOS') {
+                        $window.open("fb://page?id=1519563958349711","_system","location=yes");
+                    }
+                    else if(device.platform === 'Android') {
+                       $window.open(fb_page,"_system","location=yes");
+                    }
+              },
+              function() {  // Error callback
+                 $window.open(fb_webUrl,"_system","location=yes");
+              }
+          );
+   
     };
 
 

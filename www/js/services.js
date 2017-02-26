@@ -183,12 +183,14 @@ this.hideBanner = function(){
 vratService.service('fbLikeService',function($q,$window){
       var deffer = $q.defer();
        this.openWindow = function(){ 
-        var d = $window.open(fb_page, '_system','location=yes');
-        if(d){
+        var d = $window.open(fb_webUrl, '_system',{location:'yes'})
+       if(d){
+          console.log("from servie true")
           deffer.resolve(true);
         }
         else{
-          deffer.reject(true);
+          console.log("from servie false")
+          deffer.resolve(false);
         }
       return deffer.promise;
    }
@@ -222,7 +224,7 @@ vratService.service('askedForUpate',function($q,$ionicPopup,$window){
 
 vratService.service('askedForRating',function($q,$cordovaAppRate,$window){
   var deffer = $q.defer();
-  this.askedForRate = function(){
+  this.askedForRate = function(){fb_page
     AppRate.preferences = {
       openStoreInApp: true,
       useCustomRateDialog: false,
