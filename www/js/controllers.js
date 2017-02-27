@@ -84,7 +84,7 @@ var app = angular.module('netyatra.controllers', [])
                  $window.open(fb_webUrl,"_system","location=yes");
               }
           );
-   
+          
     };
 
 
