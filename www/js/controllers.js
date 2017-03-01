@@ -74,7 +74,7 @@ var app = angular.module('netyatra.controllers', [])
               scheme,       // URI Scheme or Package Name
               function() {  // Success callback
                 if(device.platform === 'iOS') {
-                        $window.open("fb://page?id=1519563958349711","_system","location=yes");
+                        $window.open("fb://profile/1519563958349711","_system","location=yes");
                     }
                     else if(device.platform === 'Android') {
                        $window.open(fb_page,"_system","location=yes");
