@@ -6,5 +6,6 @@ hooks/
 node_modules/
 platforms/
 plugins/
+netyatrakey
 Netyatra.apk
 *.apk

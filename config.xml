@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml version='1.0' encoding='utf-8'?>
 <widget id="com.deucen.netyatraa" version="2.3" xmlns="http://teamclouders.com" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-  <name>Net Yatra</name>
-  <description>
+    <name>Net Yatra</name>
+    <description>
         An Team Clouders Project
     </description>
-  <author email="ghayyas@teamclouders.com" href="http://www.teamclouders.com/">
+    <author email="ghayyas@teamclouders.com" href="http://www.teamclouders.com/">
       Ghayyas Mubashir
     </author>
   <content src="index.html"/>
@@ -85,3 +85,4 @@
   </platform>
   <icon src="resources/ios/icon/icon-small@3x.png"/>
 </widget>
+
