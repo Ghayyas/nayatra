@@ -9,6 +9,7 @@
     </author>
   <content src="index.html"/>
   <access origin="*"/>
+  <allow-navigation href="fb://*/*" />
   <preference name="webviewbounce" value="false"/>
   <preference name="orientation" value="portrait"/>
   <preference name="UIWebViewBounce" value="false"/>
