@@ -73,12 +73,13 @@ var app = angular.module('netyatra.controllers', [])
           appAvailability.check(
               scheme,       // URI Scheme or Package Name
               function() {  // Success callback
-                if(device.platform === 'iOS') {
-                        $window.open("fb://profile/1519563958349711","_system","location=yes");
-                    }
-                    else if(device.platform === 'Android') {
-                       $window.open(fb_page,"_system","location=yes");
-                    }
+                if(ionicPlatform == 'android'){
+                  $window.open(fb_page,"_system","location=yes");
+                }
+                else{
+                  $window.open(fb_page_ios,"_system","location=yes");
+
+                }
               },
               function() {  // Error callback
                  $window.open(fb_webUrl,"_system","location=yes");
